@@ -1,8 +1,9 @@
+// KHAI SIANG PART (Record Management)
 void recordMenu() {
 	int choice;
 	do {
 		cout << "=========================================" << endl;
-		cout << "      hi Khai Siang     " << endl;
+		cout << "            Record Management     " << endl;
 		cout << "=========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
