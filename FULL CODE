@@ -113,9 +113,9 @@ void clearInputBuffer() {
 void serviceMenu() {
 	/*int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Kai Jie     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "            Service Management     " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
 		case 1: first function
@@ -130,9 +130,9 @@ void serviceMenu() {
 void bookingMenu() {
 	/*int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Yew Hong     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "            Booking Management     " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice){
 		case 1: first function
@@ -148,7 +148,7 @@ void recordMenu() {
 	/*int choice;
 	do {
 		cout << "=========================================" << endl;
-		cout << "      hi Khai Siang     " << endl;
+		cout << "            Record Management     " << endl;
 		cout << "=========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
@@ -165,9 +165,9 @@ void recordMenu() {
 void paymentMenu() {
 	/*int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Wei Yuan     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "          Transaction Management    " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
 		case 1: first function
