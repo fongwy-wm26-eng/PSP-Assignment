@@ -1,0 +1,15 @@
+void recordMenu() {
+	int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Khai Siang     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); 
+} 
