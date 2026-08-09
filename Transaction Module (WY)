@@ -1,5 +1,6 @@
-void what() {
-	int choice;
+// WEI YUAN PART (Transaction Management)
+void paymentMenu() {
+	/*int choice;
 	do {
 		cout << "=========================================" << endl;
 		cout << "      hi Wei Yuan     " << endl;
@@ -11,5 +12,5 @@ void what() {
 		case 2:....
 		}
 
-	} while (choice != 0); 
+	} while (choice != 0); */
 }
