@@ -1,0 +1,195 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+//============================================ CONSTANTS ================================================//
+const int ESCAPE = 27;
+const int MAX_MEMBERS = 100;
+
+//====================================== FUNCTION PROTOTYPES ============================================//
+//                           [Guys declare your functions here first!!!]                                 //
+
+//---------------------------------------------- Main Menu ----------------------------------------------//
+void displayHeader();
+void mainMenu();
+void clearInputBuffer();
+int getMenuChoice(int low, int high);
+
+//---------------------------------------------- Sub Menus ----------------------------------------------//
+// KAI JIE PART (Service Management)
+void serviceMenu();
+
+// YEW HONG PART (Booking Management)
+void bookingMenu();
+
+// KHAI SIANG PART (Record Management)
+void recordMenu();
+
+// WEI YUAN PART (????)
+void what();
+
+// ZI QUAN PART (Report Module)
+void reportMenu();
+
+//=======================================================================================================//
+
+int main() {
+	int choice;
+	do {
+		mainMenu();
+		choice = getMenuChoice(1,5);
+		switch (choice) {
+		case 1: serviceMenu();
+			break;
+		case 2: bookingMenu();
+			break;
+		case 3: recordMenu();
+			break;
+		case 4: what();
+			break;
+		case 5: reportMenu();
+			break;
+		}
+
+	} while (choice !=0);
+	return 0;
+}
+
+
+//========================================== MAIN MENU (CODE) ==========================================//
+
+// Printing the Menu
+void mainMenu() {
+	cout << "=========================================" << endl;
+	cout << "     * Code & Claws' Pet Grooming! *     " << endl;
+	cout << "=========================================" << endl;
+	cout << "What are you looking for?" << endl;
+	cout << "1. Service Management" << endl;
+	cout << "2. Booking Management" << endl;
+	cout << "3. Customer Management" << endl;
+	cout << "4. ???" << endl;
+	cout << "5. Reports" << endl;
+	cout << "0. Exit" << endl;
+}
+
+// This works as an Input Filter
+int getMenuChoice(int low, int high) {
+	int choice = 0;
+	bool valid = false;
+	while (!valid) {
+		cin >> choice;
+		if (cin.fail()) {
+			cout << "Invalid, please try again!." << endl;
+			clearInputBuffer();
+		}
+		else if (choice == 0) {
+			clearInputBuffer();
+			valid = true;
+		}
+		else if (choice < low || choice > high) {
+			cout << "Please choose between (" << low << " and " << high << ")" << endl;
+			clearInputBuffer();
+		}
+		else {
+			clearInputBuffer();
+			valid = true;
+		}
+	}
+	return choice;
+}
+
+// Clearing input buffer to avoid \n bug
+void clearInputBuffer() {
+	cin.clear();
+	cin.ignore(10000, '\n');
+}
+
+//========================================== SUB MENU (CODE) =========================================//
+// KAI JIE PART (Service Management)
+void serviceMenu() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Kai Jie     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+// YEW HONG PART (Booking Management)
+void bookingMenu() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Yew Hong     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice){
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+// KHAI SIANG PART (Record Management)
+void recordMenu() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Khai Siang     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+} 
+
+
+// WEI YUAN PART (????)
+void what() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Wei Yuan     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+
+// ZI QUAN PART (Report Module)
+void reportMenu() {
+	int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Me     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice();
+		switch (choice) {
+		case 1: 
+			break;
+		case 2:
+		}
+
+	} while (choice != 0); 
+} 
+
