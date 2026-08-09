@@ -1,0 +1,21 @@
+int main() {
+	int choice;
+	do {
+		mainMenu();
+		choice = getMenuChoice(1,5);
+		switch (choice) {
+		case 1: serviceMenu();
+			break;
+		case 2: bookingMenu();
+			break;
+		case 3: recordMenu();
+			break;
+		case 4: what();
+			break;
+		case 5: reportMenu();
+			break;
+		}
+
+	} while (choice !=0);
+	return 0;
+}
