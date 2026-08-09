@@ -1,0 +1,15 @@
+void reportMenu() {
+	int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "      hi Me     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice();
+		switch (choice) {
+		case 1: 
+			break;
+		case 2:
+		}
+
+	} while (choice != 0); 
+} 
