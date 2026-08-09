@@ -26,11 +26,14 @@ void bookingMenu();
 // KHAI SIANG PART (Record Management)
 void recordMenu();
 
-// WEI YUAN PART (????)
-void what();
+// WEI YUAN PART (Transaction Management)
+void paymentMenu();
 
 // ZI QUAN PART (Report Module)
 void reportMenu();
+void summaryReport();
+void detailedReport();
+int statistics();
 
 //=======================================================================================================//
 
@@ -46,7 +49,7 @@ int main() {
 			break;
 		case 3: recordMenu();
 			break;
-		case 4: what();
+		case 4: paymentMenu();
 			break;
 		case 5: reportMenu();
 			break;
@@ -68,7 +71,7 @@ void mainMenu() {
 	cout << "1. Service Management" << endl;
 	cout << "2. Booking Management" << endl;
 	cout << "3. Customer Management" << endl;
-	cout << "4. ???" << endl;
+	cout << "4. Transaction Management" << endl;
 	cout << "5. Reports" << endl;
 	cout << "0. Exit" << endl;
 }
@@ -158,8 +161,8 @@ void recordMenu() {
 } 
 
 
-// WEI YUAN PART (????)
-void what() {
+// WEI YUAN PART (Transaction Management)
+void paymentMenu() {
 	/*int choice;
 	do {
 		cout << "=========================================" << endl;
@@ -178,18 +181,24 @@ void what() {
 
 // ZI QUAN PART (Report Module)
 void reportMenu() {
-	int choice;
+	/*int choice;
 	do {
 		cout << "=========================================" << endl;
-		cout << "      hi Me     " << endl;
+		cout << "               Report Page     " << endl;
 		cout << "=========================================" << endl;
-		choice = getMenuChoice();
+		cout << "1. Summary\n" << "2. Detailed Report\n" << "3. Analysis" << endl;
+		choice = getMenuChoice(1,3);
 		switch (choice) {
 		case 1: 
+
 			break;
 		case 2:
-		}
 
-	} while (choice != 0); 
+			break;
+		case 3:
+			
+			break;	
+		}
+	} while (choice != 0); */
 } 
 
