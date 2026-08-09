@@ -1,9 +1,10 @@
+// YEW HONG PART (Booking Management)
 void bookingMenu() {
 	int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Yew Hong     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "            Booking Management     " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice){
 		case 1: first function
