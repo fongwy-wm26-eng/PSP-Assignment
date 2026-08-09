@@ -6,14 +6,14 @@ using namespace std;
 //============================================ CONSTANTS ================================================//
 const int MAX_MEMBERS = 100;
 
-//====================================== FUNCTION PROTOTYPES ============================================//
-//                           [Guys declare your functions here first!!!]                                 //
+//========================================= FUNCTION PROTOTYPES =========================================//
+//                              [Guys declare your functions here first!!!]                              //
 
 //---------------------------------------------- Main Menu ----------------------------------------------//
 void displayHeader();
 void mainMenu();
 void clearInputBuffer();
-int getMenuChoice(int low, int high);
+int getMenuChoice(int low, int high); // (int low, int high) --> we call this parameters
 
 //---------------------------------------------- Sub Menus ----------------------------------------------//
 // KAI JIE PART (Service Management)
@@ -66,7 +66,6 @@ void mainMenu() {
 	cout << "=========================================" << endl;
 	cout << "     * Code & Claws' Pet Grooming! *     " << endl;
 	cout << "=========================================" << endl;
-	cout << "What are you looking for?" << endl;
 	cout << "1. Service Management" << endl;
 	cout << "2. Booking Management" << endl;
 	cout << "3. Customer Management" << endl;
@@ -80,6 +79,7 @@ int getMenuChoice(int low, int high) {
 	int choice = 0;
 	bool valid = false;
 	while (!valid) {
+		cout << "What are you looking for?" << endl;
 		cin >> choice;
 		if (cin.fail()) {
 			cout << "Invalid, please try again!." << endl;
