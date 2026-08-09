@@ -1,9 +1,10 @@
+// KAI JIE PART (Service Management)
 void serviceMenu() {
 	int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Kai Jie     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "            Service Management     " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
 		case 1: first function
