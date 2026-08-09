@@ -1,9 +1,10 @@
+// WEI YUAN PART (Transaction Management)
 void paymentMenu() {
 	int choice;
 	do {
-		cout << "=========================================" << endl;
-		cout << "      hi Wei Yuan     " << endl;
-		cout << "=========================================" << endl;
+		cout << "==========================================" << endl;
+		cout << "          Transaction Management    " << endl;
+		cout << "==========================================" << endl;
 		choice = getMenuChoice(put lowest choice, put highest choice);
 		switch (choice) {
 		case 1: first function
