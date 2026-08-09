@@ -1,0 +1,29 @@
+/====================================== FUNCTION PROTOTYPES ============================================//
+//                           [Guys declare your functions here first!!!]                                 //
+
+//---------------------------------------------- Main Menu ----------------------------------------------//
+void displayHeader();
+void mainMenu();
+void clearInputBuffer();
+int getMenuChoice(int low, int high);
+
+//---------------------------------------------- Sub Menus ----------------------------------------------//
+// KAI JIE PART (Service Management)
+void serviceMenu();
+
+// YEW HONG PART (Booking Management)
+void bookingMenu();
+
+// KHAI SIANG PART (Record Management)
+void recordMenu();
+
+// WEI YUAN PART (Transaction Management)
+void paymentMenu();
+
+// ZI QUAN PART (Report Module)
+void reportMenu();
+void summaryReport();
+void detailedReport();
+int statistics();
+
+//=======================================================================================================//
