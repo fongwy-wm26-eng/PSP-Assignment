@@ -1,6 +1,5 @@
-// WEI YUAN PART (Transaction Management)
 void paymentMenu() {
-	/*int choice;
+	int choice;
 	do {
 		cout << "=========================================" << endl;
 		cout << "      hi Wei Yuan     " << endl;
@@ -12,5 +11,5 @@ void paymentMenu() {
 		case 2:....
 		}
 
-	} while (choice != 0); */
+	} while (choice != 0); 
 }
