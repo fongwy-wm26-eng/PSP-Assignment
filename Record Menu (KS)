@@ -14,3 +14,187 @@ void recordMenu() {
 
 	} while (choice != 0); 
 } 
+
+
+//FUNCTIONS PROTOTYPE
+void addCustomer();
+void updateCustomer();
+void deleteCustomer();
+void searchCustomer();
+void displayAllCustomers();
+
+struct CustomerInfo {   //create a struct to store customer information
+    string id;
+    string name;
+    string phone;
+    string petName;
+    string petType;
+};
+
+
+
+void addCustomer() {
+    cout << "\n" << string(15, '=') << " Add Customer " << string(15, '=') << endl;
+
+    CustomerInfo newCustomer;
+
+    cout << "Enter Customer ID: ";
+    cin >> newCustomer.id;
+
+    cout << "Enter Customer Name: ";
+    cin.ignore();
+    getline(cin, newCustomer.name);
+
+    cout << "Enter Customer Phone: ";
+    cin >> newCustomer.phone;
+
+    cout << "Enter Pet Name: ";
+    cin.ignore();
+    getline(cin, newCustomer.petName);
+
+    cout << "Enter Pet Type: ";
+    cin.ignore();
+    getline(cin, newCustomer.petType);
+
+    ofstream file("customers.txt", ios::app);
+
+    file << newCustomer.id << endl;
+    file << newCustomer.name << endl;
+    file << newCustomer.phone << endl;
+    file << newCustomer.petName << endl;
+    file << newCustomer.petType << endl;
+
+    file.close();
+
+    cout << "Customer added successfully!" << endl;
+}
+
+
+
+void updateCustomer() {
+    cout << "\n" << string(15, '=') << " Update Customer " << string(15, '=') << endl;
+}
+
+
+
+void deleteCustomer() {
+    cout << "\n" << string(15, '=') << " Delete Customer " << string(15, '=') << endl;
+}
+
+
+
+void searchCustomer() {
+    cout << "\n" << string(15, '=') << " Search Customer " << string(15, '=') << endl;
+
+    string searchID;
+
+    cout << "Enter Customer ID to search: ";
+    cin >> searchID;
+
+    ifstream file("customers.txt");
+
+    if (!file) {
+        cout << "Unable to open customer file." << endl;
+        return;
+    }
+
+    CustomerInfo customer;
+    bool found = false;
+
+    while (file >> customer.id) {
+        file.ignore();
+        getline(file, customer.name);
+
+        file >> customer.phone;
+        file.ignore();
+        getline(file, customer.petName);
+
+        file.ignore();
+        getline(file, customer.petType);
+
+        if (customer.id == searchID) {
+            cout << "\nCustomer ID: " << customer.id;
+            cout << "\nCustomer Name: " << customer.name;
+            cout << "\nCustomer Phone: " << customer.phone;
+            cout << "\nPet Name: " << customer.petName;
+            cout << "\nPet Type: " << customer.petType << endl;
+
+            found = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (!found) {
+        cout << "Customer not found." << endl;
+    }
+}
+
+
+
+void displayAllCustomers() {
+    cout << "\n" << string(15, '=') << " Display All Customers " << string(15, '=') << endl;
+        ifstream file("customers.txt");
+
+        CustomerInfo customer;
+
+        while (file >> customer.id) {
+            file.ignore();
+            getline(file, customer.name);
+
+            file >> customer.phone;
+            file.ignore();
+            getline(file, customer.petName);
+
+            file.ignore();
+            getline(file, customer.petType);
+
+            cout << "\nCustomer ID: " << customer.id;
+            cout << "\nCustomer Name: " << customer.name;
+            cout << "\nCustomer Phone: " << customer.phone;
+            cout << "\nPet Name: " << customer.petName;
+            cout << "\nPet Type: " << customer.petType << endl;
+        }
+
+        file.close();
+    }
+}
+
+//Record Management
+
+int main(){
+    int choiceRMM; 
+    do {
+        cout << setfill('=') << setw(50) << "" << endl;
+        cout << setfill(' ') << setw(40) << "Customer Record Management" << endl;
+        cout << setfill('=') << setw(50) << "" << endl;
+        cout << "1. Add Customer \n2. Update Customer \n3. Delete Customer \n4. Search Customer \n5. Display All Customers" << endl;
+        cout << "\nPlease enter your choice: ";
+
+        cin >> choiceRMM;
+
+        switch (choiceRMM) {
+        case 1:
+            addCustomer();
+            break;
+        case 2:
+            updateCustomer();
+            break;
+        case 3:
+            deleteCustomer();
+            break;
+        case 4:
+            searchCustomer();
+            break;
+        case 5:
+            displayAllCustomers();
+            break;
+        default:
+            cout << "Invalid input. Please try again." << endl;
+            break;
+        }
+    } while (choiceRMM > 5 || choiceRMM < 1);
+
+    return 0;
+}
