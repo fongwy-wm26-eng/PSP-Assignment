@@ -14,3 +14,155 @@ void serviceMenu() {
 
 	} while (choice != 0); 
 }
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cstdio>
+#include <cmath>
+
+using namespace std;
+
+void petgroomingSystem();
+void typeService();
+void addService();
+
+int returnNumber;
+int serviceNumber;
+double servicePrice;
+
+int main() {
+	petgroomingSystem();
+}
+
+void petgroomingSystem() {
+	cout << "1. Add Service" << endl;
+	cout << "2. Update Service" << endl;
+	cout << "3. Delete Service" << endl;
+	cout << "4. Search Service" << endl;
+	cout << "5. Display Services" << endl;
+	cout << "0. Exit" << "\n" << endl;
+	cout << "Select the number of Service: " << endl;
+	int choice;
+	cin >> choice;
+	cout << endl;
+
+
+	switch (choice) {
+	case 1:
+		typeService();
+		cout << endl;
+		addService();
+		break;
+	case 2:
+		// Update service/item logic here
+		break;
+	case 3:
+		// Delete service/item logic here
+		break;
+	case 4:
+		// Search service/item logic here
+		break;
+	case 5:
+		// Display services/items logic here
+		break;
+	case 0:
+		cout << "Exiting the program..." << endl;
+		exit(0);
+	default:
+		cout << "Invalid choice. Please enter a valid option." << endl;
+	}
+}
+
+
+void typeService() {
+	cout << "=================================================================" << endl;
+	cout << "                     Pet Grooming Services               " << endl;
+	cout << "=================================================================" << "\n" << endl;
+	cout << "1. Basic Bath (Bathing and blow-drying)" << setw(10) << setprecision(2) << fixed << "RM30.00" << endl;
+	cout << "2. Hair Trimming (Trimming and shape fur)" << setw(10) << setprecision(2) << fixed << "RM40.00" << endl;
+	cout << "3. Nail Clipping (Clipping and trimming the nails)" << setw(10) << setprecision(2) << fixed << "RM15.00" << endl;
+	cout << "4. Teeth Cleaning (Cleaning the teeth)" << setw(10) << setprecision(2) << fixed << "RM15.00" << endl;
+	cout << "5. Ear Cleaning (Cleaning the ears)" << setw(10) << setprecision(2) << fixed << "RM15.00" << endl;
+	cout << "6. Full Grooming (Bathing, Hair trimming, nail clipping and ear cleaning)" << setw(10) << setprecision(2) << fixed << "RM70.00" << endl;
+	cout << "7. Flea Treatment (Treatment to remove and prevent fleas)" << setw(10) << setprecision(2) << fixed << "RM50.00" << endl;
+	cout << "0. Exit" << endl;
+	// Implementation for adding a service/item
+}
+
+void addService() {
+	cout << "Select the number of service: ";
+	cin >> serviceNumber;
+	cin.ignore(); // Clear the input buffer
+	string serviceName;
+	switch(serviceNumber) {
+		case 1:
+			serviceName = "Basic Bath";
+			servicePrice = 30.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 2:
+			serviceName = "Hair Trimming";
+			servicePrice = 40.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 3:
+			serviceName = "Nail Clipping";
+			servicePrice = 15.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 4:
+			serviceName = "Teeth Cleaning";
+			servicePrice = 15.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 5:
+			serviceName = "Ear Cleaning";
+			servicePrice = 15.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 6:
+			serviceName = "Full Grooming";
+			servicePrice = 70.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 7:
+			serviceName = "Flea Treatment";
+			servicePrice = 50.00;
+			cout << endl << "Service added successfully!" << endl;
+			break;
+		case 0:
+			cout << "Exiting add service...." << endl;
+			return petgroomingSystem();
+		default:
+			cout << "Invalid service number. Please enter a valid number" << endl;
+			return;
+	}
+	cout << "Service '" << serviceName << "' added with price RM" << fixed << setprecision(2) << servicePrice << endl;
+	cout << "\n" << "1.Add another service" << endl;
+	cout << "2.Return to main menu" << endl;
+	cout << "0. Exit" << endl;
+	cout << "Select the number of Service: ";
+	cin >> returnNumber;
+	cout << endl;
+
+	switch (returnNumber) {
+	case 1:
+		typeService();
+		cout << endl;
+		addService();
+		cout << endl;
+		break;
+	case 2:
+		petgroomingSystem();
+		cout << endl;
+		break;
+	case 0:
+		cout << "Exiting the program..." << endl;
+		exit(0);
+	default:
+		cout << "Invalid choice. Returning to main menu." << endl;
+		petgroomingSystem();
+		cout << endl;
+	}
+}
