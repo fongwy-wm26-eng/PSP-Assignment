@@ -1,3 +1,28 @@
+//eyyy yo input filter for string
+string getName() {
+	string name;
+	bool valid;
+	do {
+		valid = true;
+		getline(cin, name);
+		if (name.length() == 0) {
+			valid = false;
+			cout << "Input cannot be empty. Try again.\n";
+			continue;
+		}
+		for (int i = 0;i < name.length();i++) {
+			if (!isalpha(name.at(i)) && !isspace(name.at(i))) {
+				cout << "Please enter a valid name." << endl;
+				valid = false;
+				break;
+			}
+		}
+
+	} while (valid == false);
+	return name;
+}
+
+
 // KHAI SIANG PART (Record Management)
 void recordMenu() {
 	int choice;
