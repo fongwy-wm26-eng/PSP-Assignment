@@ -14,31 +14,57 @@ void bookingMenu() {
 
 	} while (choice != 0); 
 }
+
 #include <iostream>
 #include <string>
 #include <iomanip>
 using namespace std;
 
-void booking() {
-	int service;
-	string time;
+//Booking Struct (Yew Hong)
+struct Booking {
+	string activity;
+	float times[10]; //define times array
+};
+
+void booking(Booking b, Payment p) { //Payment p from Wei Yuan stuct
 	while (true) {
+		int service;
+		char determine;
 		cout << "Current available pet grooming service :\n";
-		cout << "1.Bath & Brush \n2.Teeth Brushing \n3.Skin & Coat Treatment \n4.Pet haircut\n";
+		cout << "1.Bath & Brush \n2.Nail Clipping \n3.Skin & Coat Treatment \n4.De-shedding Treatment\n";
 		cout << "Please enter the number of service you want to book :";//asking user to select the service they prefer
 		cin >> service;
 
-		if (service >= 1 && service <= 4) {
-			cout << "Then, please enter the time you want to book the service (e.g., 10:00 AM) :";
-			cin >> time;
-			cout << "Thank you! Your booking had been made." << endl;
-			cout << "You can review or cancel your booking at booking history." << endl;
-			break;
+		//return activity of user choosing
+		if (service == 1) {
+			b.activity = "Bath & Brush";
+			for (int i = 0; i < 10; i++) {
+				cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+				cin >> b.times[i];
+				cout << "\nWould you like to continue booking other times?" << endl;
+				cout << "Press 1 to cancel, any other key to continue :" << endl;
+				cin >> determine;
+				if (determine == 1)
+					break;
+			}
+		}
 
-		}
+
+		else if (service == 2)
+			b.activity = "Nail Clipping";
+
+		else if (service == 3)
+			b.activity = "Skin & Coat Treatment";
+
+		else if (service == 4)
+			b.activity = "De-shedding Treatment";
+
 		else {
-			cout << "Invalid service number. Please try again." << endl;
+			cout << "Invalid, please try again." << endl;
 		}
+	}
+
+}
 	}
 
 	
