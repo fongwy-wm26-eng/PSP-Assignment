@@ -1,230 +1,351 @@
-//eyyy yo input filter for string
-string getName() {
-	string name;
-	bool valid;
-	do {
-		valid = true;
-		getline(cin, name);
-		if (name.length() == 0) {
-			valid = false;
-			cout << "Names cannot be empty. Try again.\n";
-			continue;
-		}
-		if (name.length() > 30) {
-			valid = false;
-			cout << "Please enter a shorter name.\n";
-			continue;
-		}
-		for (int i = 0;i < name.length();i++) {
-			if (!isalpha(name.at(i)) && !isspace(name.at(i))) {
-				cout << "Please enter a valid name." << endl;
-				valid = false;
-				break;
-			}
-		}
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
 
-	} while (valid == false);
-	return name;
+using namespace std;
+
+//Customer Struct (Khai Siang)
+struct CustomerInfo {
+	string id;
+	string name;
+	string phone;
+	string petName;
+	string petType;
+};
+
+
+// KHAI SIANG PART (Record Management)
+//DECLARE
+void recordMenu();
+	void addCustomer();
+	void updateCustomer();
+	void deleteCustomer();
+	void searchCustomer();
+	void displayAllCustomers();
+
+void clearInputBuffer();
+void saveAllToFile();
+int findCustomerIndex(string actionName);
+int getMenuChoice(int low, int high);
+
+//DEFINITION
+const int MAX_CUSTOMERS = 100;
+CustomerInfo customers[MAX_CUSTOMERS];
+int customerCount = 0;
+
+bool isEmpty() {
+	if (customerCount == 0) {
+		cout << "No customer records available." << endl;
+		return true;
+	}
+	return false;
+}
+
+bool isDuplicateID(string id) {
+	for (int i = 0; i < customerCount; i++) {
+		if (customers[i].id == id) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void saveAllToFile() {
+	ofstream file("customers.txt");
+	if (!file.is_open()) {
+		cout << "Error: Could not open file for writing." << endl;
+		return;
+	}
+
+	for (int i = 0; i < customerCount; i++) {
+		file << customers[i].id << endl;
+		file << customers[i].name << endl;
+		file << customers[i].phone << endl;
+		file << customers[i].petName << endl;
+		file << customers[i].petType << endl;
+	}
+	file.close();
+}
+
+int findCustomerIndex(string actionName) {
+	string targetID;
+	cout << "Enter Customer ID to " << actionName << ": ";
+	cin >> targetID;
+
+	int targetIndex = -1;
+
+	for (int i = 0; i < customerCount; i++) {
+		if (customers[i].id == targetID) {
+			targetIndex = i;
+			break;}
+	}
+
+	if (targetIndex == -1) {
+		cout << "Customer ID not found." << endl;
+		return -1;
+	}
+
+	return targetIndex;
+}
+
+int getMenuChoice(int low, int high) {
+	int choice = 0;
+	bool valid = false;
+	while (!valid) {
+		cout << "What are you looking for?" << endl;
+		cin >> choice;
+		if (cin.fail()) {
+			cout << "Invalid, please try again!." << endl;
+			clearInputBuffer();
+		}
+		else if (choice == 0) {
+			clearInputBuffer();
+			valid = true;
+		}
+		else if (choice < low || choice > high) {
+			cout << "Please choose between (" << low << " and " << high << ")" << endl;
+			clearInputBuffer();
+		}
+		else {
+			clearInputBuffer();
+			valid = true;
+		}
+	}
+	return choice;
+}
+
+void clearInputBuffer() {
+	cin.clear();
+	cin.ignore(10000, '\n');
 }
 
 
 // KHAI SIANG PART (Record Management)
 void recordMenu() {
-	int choice;
+	int choiceRMM;
 	do {
-		cout << "=========================================" << endl;
-		cout << "            Record Management     " << endl;
-		cout << "=========================================" << endl;
-		choice = getMenuChoice(put lowest choice, put highest choice);
-		switch (choice) {
-		case 1: first function
+		cout << endl;
+		cout << "==========================================" << endl;
+		cout << "        Customer Record Management     " << endl;
+		cout << "==========================================" << endl;
+		cout << "1. Add Customer \n2. Update Customer \n3. Delete Customer \n4. Search Customer \n5. Display All Customers\n0. Exit" << endl;
+		choiceRMM = getMenuChoice(1, 5);
+		switch (choiceRMM) {
+		case 1: addCustomer();
 			break;
-		case 2:....
+		case 2: updateCustomer();
+			break;
+		case 3: deleteCustomer();
+			break;
+		case 4: searchCustomer();
+			break;
+		case 5: displayAllCustomers();
+			break;
 		}
 
-	} while (choice != 0); 
-} 
-
-
-//FUNCTIONS PROTOTYPE
-void addCustomer();
-void updateCustomer();
-void deleteCustomer();
-void searchCustomer();
-void displayAllCustomers();
-
-struct CustomerInfo {   //create a struct to store customer information
-    string id;
-    string name;
-    string phone;
-    string petName;
-    string petType;
-};
-
-
+	} while (choiceRMM != 0);
+}
 
 void addCustomer() {
-    cout << "\n" << string(15, '=') << " Add Customer " << string(15, '=') << endl;
+	cout << endl;
+	cout << "==========================================" << endl;
+	cout << "               Add Customer" << endl;
+	cout << "==========================================" << endl;
 
-    CustomerInfo newCustomer;
+	if (customerCount >= MAX_CUSTOMERS) {
+		cout << "Error: Customer limit reached. Cannot add more customers." << endl;
+		return;
+	}
 
-    cout << "Enter Customer ID: ";
-    cin >> newCustomer.id;
+	CustomerInfo newCustomer;
 
-    cout << "Enter Customer Name: ";
-    cin.ignore();
-    getline(cin, newCustomer.name);
+	//=====Enter Customer ID with validation=====
+	do {
+		cout << "Enter Customer ID: ";
+		cin >> newCustomer.id;
 
-    cout << "Enter Customer Phone: ";
-    cin >> newCustomer.phone;
+		if (newCustomer.id.empty()) {
+			cout << "Customer ID cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else if (isDuplicateID(newCustomer.id)) {
+			cout << "Customer ID already exists. Please enter a unique ID." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (true);
 
-    cout << "Enter Pet Name: ";
-    cin.ignore();
-    getline(cin, newCustomer.petName);
+	cin.ignore(); //put this outside loop to run once only
 
-    cout << "Enter Pet Type: ";
-    cin.ignore();
-    getline(cin, newCustomer.petType);
+	//=====Enter Customer Name with validation=====
+	do {
+		cout << "Enter Customer Name: ";
+		getline(cin, newCustomer.name);
 
-    ofstream file("customers.txt", ios::app);
+		if (newCustomer.name.empty()) {
+			cout << "Customer Name cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.name.empty());
 
-    file << newCustomer.id << endl;
-    file << newCustomer.name << endl;
-    file << newCustomer.phone << endl;
-    file << newCustomer.petName << endl;
-    file << newCustomer.petType << endl;
+	//=====Enter Customer Phone with validation=====
+	do {
+		cout << "Enter Customer Phone: ";
+		getline(cin, newCustomer.phone);
+		if (newCustomer.phone.empty()) {
+			cout << "Customer Phone cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.phone.empty());
 
-    file.close();
+	//=====Enter Pet Name with validation=====
+	do {
+		cout << "Enter Pet Name: ";
+		getline(cin, newCustomer.petName);
+		if (newCustomer.petName.empty()) {
+			cout << "Pet Name cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.petName.empty());
 
-    cout << "Customer added successfully!" << endl;
+	//=====Enter Pet Type with validation=====
+	do {
+		cout << "Enter Pet Type: ";
+		getline(cin, newCustomer.petType);
+		if (newCustomer.petType.empty()) {
+			cout << "Pet Type cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.petType.empty());
+
+	customers[customerCount] = newCustomer;
+	customerCount++;
+
+	saveAllToFile();
+	cout << "\nCustomer added successfully!" << endl;
 }
 
 
+// TUTOR: not complete yet, it only print the title and stop.
+// khai siang, update and delete are both compulsory for ur module.
+// once u got the array, update is: search for the ID, then assign
+// the new value into customers[i].name, not compare it.
+void updateCustomer(){
+	cout << endl;
+	cout << "=========================================" << endl;
+	cout << "             Update Customer" << endl;
+	cout << "=========================================" << endl;
 
-void updateCustomer() {
-    cout << "\n" << string(15, '=') << " Update Customer " << string(15, '=') << endl;
+	if (isEmpty()) return;
+
+	int index = findCustomerIndex("update");
+	if (index == -1) {
+		return;
+	}
+
+	cin.ignore();
+	cout << "Updating details for Customer ID: " << customers[index].id << endl;
+
+	cout << "Enter New Customer Name: ";
+	getline(cin, customers[index].name);
+
+	cout << "Enter New Customer Phone: ";
+	getline(cin, customers[index].phone);
+
+	cout << "Enter New Pet Name: ";
+	getline(cin, customers[index].petName);
+
+	cout << "Enter New Pet Type: ";
+	getline(cin, customers[index].petType);
+
+	saveAllToFile();
+	cout << "\nCustomer record updated successfully!" << endl;
 }
 
-
-
+// TUTOR: also not complete yet. delete is the hardest one, do it
+// with the array. find the position, then shift everything after it
+// up by one, then customerCount--. after that rewrite the whole file.
+// with file only and no array, u cannot delete anything.
 void deleteCustomer() {
-    cout << "\n" << string(15, '=') << " Delete Customer " << string(15, '=') << endl;
+	cout << endl;
+	cout << "=========================================" << endl;
+	cout << "             Delete Customer" << endl;
+	cout << "=========================================" << endl;
+
+	if (isEmpty()) return;
+
+	int index = findCustomerIndex("delete");
+	if (index == -1) {
+		return;
+	}
+
+	for (int i = index; i < customerCount - 1; i++) {
+		customers[i] = customers[i + 1];
+	}
+	customerCount--;
+
+	saveAllToFile();
+	cout << "\nCustomer record deleted successfully!" << endl;
 }
-
-
 
 void searchCustomer() {
-    cout << "\n" << string(15, '=') << " Search Customer " << string(15, '=') << endl;
+	cout << endl;
+	cout << "=========================================" << endl;
+	cout << "             Search Customer" << endl;
+	cout << "=========================================" << endl;
 
-    string searchID;
+	if (isEmpty()) return;
 
-    cout << "Enter Customer ID to search: ";
-    cin >> searchID;
+	int index = findCustomerIndex("search");
+	if (index == -1) return;
 
-    ifstream file("customers.txt");
-
-    if (!file) {
-        cout << "Unable to open customer file." << endl;
-        return;
-    }
-
-    CustomerInfo customer;
-    bool found = false;
-
-    while (file >> customer.id) {
-        file.ignore();
-        getline(file, customer.name);
-
-        file >> customer.phone;
-        file.ignore();
-        getline(file, customer.petName);
-
-        file.ignore();
-        getline(file, customer.petType);
-
-        if (customer.id == searchID) {
-            cout << "\nCustomer ID: " << customer.id;
-            cout << "\nCustomer Name: " << customer.name;
-            cout << "\nCustomer Phone: " << customer.phone;
-            cout << "\nPet Name: " << customer.petName;
-            cout << "\nPet Type: " << customer.petType << endl;
-
-            found = true;
-            break;
-        }
-    }
-
-    file.close();
-
-    if (!found) {
-        cout << "Customer not found." << endl;
-    }
+	cout << "\nCustomer ID: " << customers[index].id;
+	cout << "\nCustomer Name: " << customers[index].name;
+	cout << "\nCustomer Phone: " << customers[index].phone;
+	cout << "\nPet Name: " << customers[index].petName;
+	cout << "\nPet Type: " << customers[index].petType << endl;
 }
-
-
 
 void displayAllCustomers() {
-    cout << "\n" << string(15, '=') << " Display All Customers " << string(15, '=') << endl;
-        ifstream file("customers.txt");
+	cout << endl;
+	cout << "=========================================" << endl;
+	cout << "         Displaying All Customer" << endl;
+	cout << "=========================================" << endl;
+	// TUTOR: u never check if the file open. if customers.txt is not
+	// there, or nobody added anyone yet, this function print nothing
+	// at all and the user think the program hang. add a counter and
+	// print "No customer record yet." when the count is 0.
 
-        CustomerInfo customer;
+	if (isEmpty()) return;
 
-        while (file >> customer.id) {
-            file.ignore();
-            getline(file, customer.name);
-
-            file >> customer.phone;
-            file.ignore();
-            getline(file, customer.petName);
-
-            file.ignore();
-            getline(file, customer.petType);
-
-            cout << "\nCustomer ID: " << customer.id;
-            cout << "\nCustomer Name: " << customer.name;
-            cout << "\nCustomer Phone: " << customer.phone;
-            cout << "\nPet Name: " << customer.petName;
-            cout << "\nPet Type: " << customer.petType << endl;
-        }
-
-        file.close();
-    }
+	for (int i = 0; i < customerCount; i++) {
+		cout << "\nCustomer [" << (i + 1) << "]";
+		cout << "\nCustomer ID: " << customers[i].id;
+		cout << "\nCustomer Name: " << customers[i].name;
+		cout << "\nCustomer Phone: " << customers[i].phone;
+		cout << "\nPet Name: " << customers[i].petName;
+		cout << "\nPet Type: " << customers[i].petType << endl;
+		cout << "-----------------------------------------";
+	}
+	cout << endl;
 }
 
-//Record Management
-
-int main(){
-    int choiceRMM; 
-    do {
-        cout << setfill('=') << setw(50) << "" << endl;
-        cout << setfill(' ') << setw(40) << "Customer Record Management" << endl;
-        cout << setfill('=') << setw(50) << "" << endl;
-        cout << "1. Add Customer \n2. Update Customer \n3. Delete Customer \n4. Search Customer \n5. Display All Customers" << endl;
-        cout << "\nPlease enter your choice: ";
-
-        cin >> choiceRMM;
-
-        switch (choiceRMM) {
-        case 1:
-            addCustomer();
-            break;
-        case 2:
-            updateCustomer();
-            break;
-        case 3:
-            deleteCustomer();
-            break;
-        case 4:
-            searchCustomer();
-            break;
-        case 5:
-            displayAllCustomers();
-            break;
-        default:
-            cout << "Invalid input. Please try again." << endl;
-            break;
-        }
-    } while (choiceRMM > 5 || choiceRMM < 1);
-
-    return 0;
+int main() {
+	recordMenu();
+	return 0;
 }
