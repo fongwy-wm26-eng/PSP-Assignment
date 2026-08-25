@@ -5,13 +5,20 @@
 
 using namespace std;
 
+
+//Enum
+enum PetType {
+	DOG = 1,
+	CAT,
+};
+
 //Customer Struct (Khai Siang)
 struct CustomerInfo {
 	string id;
 	string name;
 	string phone;
 	string petName;
-	string petType;
+	PetType petType;
 };
 
 
@@ -28,6 +35,9 @@ void clearInputBuffer();
 void saveAllToFile();
 int findCustomerIndex(string actionName);
 int getMenuChoice(int low, int high);
+
+PetType selectPetType();
+string petTypeToString(PetType type);
 
 //DEFINITION
 const int MAX_CUSTOMERS = 100;
@@ -63,7 +73,7 @@ void saveAllToFile() {
 		file << customers[i].name << endl;
 		file << customers[i].phone << endl;
 		file << customers[i].petName << endl;
-		file << customers[i].petType << endl;
+		file << petTypeToString(customers[i].petType) << endl;
 	}
 	file.close();
 }
@@ -78,7 +88,8 @@ int findCustomerIndex(string actionName) {
 	for (int i = 0; i < customerCount; i++) {
 		if (customers[i].id == targetID) {
 			targetIndex = i;
-			break;}
+			break;
+		}
 	}
 
 	if (targetIndex == -1) {
@@ -113,6 +124,34 @@ int getMenuChoice(int low, int high) {
 		}
 	}
 	return choice;
+}
+
+PetType selectPetType() {
+	int choice;
+	while (true) {
+		cout << "Select Pet Type:" << endl;
+		cout << "1. Dog" << endl;
+		cout << "2. Cat" << endl;
+		cout << "Enter choice: ";
+		cin >> choice;
+
+		if (cin.fail() || choice < 1 || choice > 2) {
+			cout << "Invalid choice. Please enter a number between 1 and 2.\n" << endl;
+			clearInputBuffer();
+		}
+		else {
+			clearInputBuffer();
+			return static_cast<PetType>(choice); // turn the integer choice into PetType enum
+		}
+	}
+}
+
+string petTypeToString(PetType type) {
+	switch (type) {
+	case DOG:   return "Dog";
+	case CAT:   return "Cat";
+	default:    return "Invalid input";
+	}
 }
 
 void clearInputBuffer() {
@@ -220,18 +259,8 @@ void addCustomer() {
 		}
 	} while (newCustomer.petName.empty());
 
-	//=====Enter Pet Type with validation=====
-	do {
-		cout << "Enter Pet Type: ";
-		getline(cin, newCustomer.petType);
-		if (newCustomer.petType.empty()) {
-			cout << "Pet Type cannot be empty. Please try again." << endl;
-			continue;
-		}
-		else {
-			break;
-		}
-	} while (newCustomer.petType.empty());
+	//=====Enter Pet Type with Enum function=====
+	newCustomer.petType = selectPetType();
 
 	customers[customerCount] = newCustomer;
 	customerCount++;
@@ -241,10 +270,6 @@ void addCustomer() {
 }
 
 
-// TUTOR: not complete yet, it only print the title and stop.
-// khai siang, update and delete are both compulsory for ur module.
-// once u got the array, update is: search for the ID, then assign
-// the new value into customers[i].name, not compare it.
 void updateCustomer(){
 	cout << endl;
 	cout << "=========================================" << endl;
@@ -255,8 +280,7 @@ void updateCustomer(){
 
 	int index = findCustomerIndex("update");
 	if (index == -1) {
-		return;
-	}
+		return;}
 
 	cin.ignore();
 	cout << "Updating details for Customer ID: " << customers[index].id << endl;
@@ -270,17 +294,13 @@ void updateCustomer(){
 	cout << "Enter New Pet Name: ";
 	getline(cin, customers[index].petName);
 
-	cout << "Enter New Pet Type: ";
-	getline(cin, customers[index].petType);
+	customers[index].petType = selectPetType();
 
 	saveAllToFile();
 	cout << "\nCustomer record updated successfully!" << endl;
 }
 
-// TUTOR: also not complete yet. delete is the hardest one, do it
-// with the array. find the position, then shift everything after it
-// up by one, then customerCount--. after that rewrite the whole file.
-// with file only and no array, u cannot delete anything.
+
 void deleteCustomer() {
 	cout << endl;
 	cout << "=========================================" << endl;
@@ -318,7 +338,7 @@ void searchCustomer() {
 	cout << "\nCustomer Name: " << customers[index].name;
 	cout << "\nCustomer Phone: " << customers[index].phone;
 	cout << "\nPet Name: " << customers[index].petName;
-	cout << "\nPet Type: " << customers[index].petType << endl;
+	cout << "\nPet Type: " << petTypeToString(customers[index].petType) << endl;
 }
 
 void displayAllCustomers() {
@@ -326,10 +346,6 @@ void displayAllCustomers() {
 	cout << "=========================================" << endl;
 	cout << "         Displaying All Customer" << endl;
 	cout << "=========================================" << endl;
-	// TUTOR: u never check if the file open. if customers.txt is not
-	// there, or nobody added anyone yet, this function print nothing
-	// at all and the user think the program hang. add a counter and
-	// print "No customer record yet." when the count is 0.
 
 	if (isEmpty()) return;
 
@@ -339,7 +355,7 @@ void displayAllCustomers() {
 		cout << "\nCustomer Name: " << customers[i].name;
 		cout << "\nCustomer Phone: " << customers[i].phone;
 		cout << "\nPet Name: " << customers[i].petName;
-		cout << "\nPet Type: " << customers[i].petType << endl;
+		cout << "\nPet Type: " << petTypeToString(customers[i].petType) << endl;
 		cout << "-----------------------------------------";
 	}
 	cout << endl;
