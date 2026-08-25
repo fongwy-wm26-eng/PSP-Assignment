@@ -14,11 +14,11 @@ enum PetType {
 
 //Customer Struct (Khai Siang)
 struct CustomerInfo {
-	string id;
-	string name;
-	string phone;
-	string petName;
-	PetType petType;
+	string id = "";
+	string name = "";
+	string phone = "";
+	string petName = "";
+	PetType petType = DOG;
 };
 
 
@@ -38,6 +38,9 @@ int getMenuChoice(int low, int high);
 
 PetType selectPetType();
 string petTypeToString(PetType type);
+PetType stringToPetType(string typeStr);
+
+void loadFromFile();
 
 //DEFINITION
 const int MAX_CUSTOMERS = 100;
@@ -59,6 +62,11 @@ bool isDuplicateID(string id) {
 		}
 	}
 	return false;
+}
+
+void clearInputBuffer() {
+	cin.clear();
+	cin.ignore(10000, '\n');
 }
 
 void saveAllToFile() {
@@ -154,11 +162,40 @@ string petTypeToString(PetType type) {
 	}
 }
 
-void clearInputBuffer() {
-	cin.clear();
-	cin.ignore(10000, '\n');
+PetType stringToPetType(string typeStr) {
+	if (typeStr == "Dog") return DOG;
+	if (typeStr == "Cat") return CAT;
+	return DOG;
 }
 
+void loadFromFile() {
+	ifstream file("customers.txt");
+	if (!file.is_open()) {
+		return;
+	}
+
+	customerCount = 0;
+	string id, name, phone, petName, petTypeStr;
+
+	while (customerCount < MAX_CUSTOMERS && getline(file, id)) {
+		if (id.empty()) continue;
+
+		getline(file, name);
+		getline(file, phone);
+		getline(file, petName);
+		getline(file, petTypeStr);
+
+		customers[customerCount].id = id;
+		customers[customerCount].name = name;
+		customers[customerCount].phone = phone;
+		customers[customerCount].petName = petName;
+		customers[customerCount].petType = stringToPetType(petTypeStr);
+
+		customerCount++;
+	}
+
+	file.close();
+}
 
 // KHAI SIANG PART (Record Management)
 void recordMenu() {
@@ -217,7 +254,7 @@ void addCustomer() {
 		}
 	} while (true);
 
-	cin.ignore(); //put this outside loop to run once only
+	clearInputBuffer(); //put this outside loop to run once only
 
 	//=====Enter Customer Name with validation=====
 	do {
@@ -362,6 +399,7 @@ void displayAllCustomers() {
 }
 
 int main() {
+	loadFromFile();
 	recordMenu();
 	return 0;
 }
