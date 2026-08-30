@@ -1,19 +1,65 @@
+
+// STILL MISSING, all compulsory, remember to add these
+// 1. arrays. u have NO array at all in this file. not 1D, not 2D.
+//    both are compulsory and the system must hold at least 50
+//    records. right now everything go straight into the file.
+// 2. sorting. bubble sort or selection sort, at least one.
+
+
+// DO THESE FIRST BEFORE THE NEXT CHECK
+// 1. fix the infinite loop at the bottom of processPayment
+// 2. fix the totalAmount that nobody ever key in
+// 4. delete the 3 extra ignore() calls, i marked all 3
+// 7. zi quan start the report module and the sorting
+
 #include <iostream>
 #include <iomanip>
+#include <string>
+#include <fstream>
+#include <cstdio>
+#include <cmath>
+#include <cctype>
 
 using namespace std;
 
+//============================================ ENUM ===============================================//
+enum PetType {
+	DOG = 1,
+	CAT,
+	OTHER,
+};
+
+
+//============================================ STRUCTURES ===============================================//
+//Customer Struct (Khai Siang)
+struct CustomerInfo {
+	string id = "";
+	string name = "";
+	string phone = "";
+	string petName = "";
+	PetType petType = DOG;
+};
+
+//Payment Struct (Wei Yuan)
+struct Payment {
+	double totalAmount = 0.0;
+	double deposit = 0.0;
+	double balance = 0.0;
+	string status = "";
+};
+
+
 //============================================ CONSTANTS ================================================//
-const int MAX_MEMBERS = 100;
+const int MAX_CUSTOMERS = 100;
+CustomerInfo customers[MAX_CUSTOMERS];
+int customerCount = 0;
 
 //========================================= FUNCTION PROTOTYPES =========================================//
-//                              [Guys declare your functions here first!!!]                              //
-
 //---------------------------------------------- Main Menu ----------------------------------------------//
-void displayHeader();
 void mainMenu();
-void clearInputBuffer();
 int getMenuChoice(int low, int high); // (int low, int high) --> we call this parameters
+void clearInputBuffer();
+void loadFromFile();
 
 //---------------------------------------------- Sub Menus ----------------------------------------------//
 // KAI JIE PART (Service Management)
@@ -24,23 +70,77 @@ void bookingMenu();
 
 // KHAI SIANG PART (Record Management)
 void recordMenu();
+void addCustomer();
+void updateCustomer();
+void deleteCustomer();
+void searchCustomer();
+void displayAllCustomers();
+bool isEmpty();
+bool isDuplicateID(string id);
+void saveAllToFile();
+int findCustomerIndex(string actionName);
+PetType selectPetType();
+string petTypeToString(PetType type);
+PetType stringToPetType(string typeStr);
 
 // WEI YUAN PART (Transaction Management)
 void paymentMenu();
+Payment processPayment(Payment p); // Function to process payment
+void displayPaymentDetails(const Payment p); // Function to display payment details
+void invoice(const Payment p); // Function to generate invoice
+void updatePaymentStatus(); // Function to update payment status
+void paymentHistory(); // Function to view payment history
+void searchPayment(); // Function to search for a payment
 
-// ZI QUAN PART (Report Module)
+// ZI QUAN PART (Report Module)e
 void reportMenu();
-void summaryReport();
-void detailedReport();
+void displaySummary();
+void displayReport();
+void displayAnalysis();
+// TUTOR: statistics() also got no body anywhere. same problem as
+// displayHeader(). also ur report module is short of one function.
+// the module need 5: summary, detailed report, statistics,
+// SORT RECORDS, and analysis. u are missing sort records, and sort
+// is compulsory for the whole group.
 int statistics();
 
+//====================================== Data Loading Section =======================================//
+// Load Customer Data
+void loadFromFile() {
+	ifstream file("customers.txt");
+	if (!file.is_open()) {
+		return;
+	}
+
+	customerCount = 0;
+	string id, name, phone, petName, petTypeStr;
+
+	while (customerCount < MAX_CUSTOMERS && getline(file, id)) {
+		if (id.empty()) continue;
+
+		getline(file, name);
+		getline(file, phone);
+		getline(file, petName);
+		getline(file, petTypeStr);
+
+		customers[customerCount].id = id;
+		customers[customerCount].name = name;
+		customers[customerCount].phone = phone;
+		customers[customerCount].petName = petName;
+		customers[customerCount].petType = stringToPetType(petTypeStr);
+
+		customerCount++;
+	}
+	file.close();
+}
 //=========================================== MAIN FUNCTION =============================================//
 
 int main() {
+	loadFromFile();
 	int choice;
 	do {
 		mainMenu();
-		choice = getMenuChoice(1,5);
+		choice = getMenuChoice(1, 5);
 		switch (choice) {
 		case 1: serviceMenu();
 			break;
@@ -54,7 +154,7 @@ int main() {
 			break;
 		}
 
-	} while (choice !=0);
+	} while (choice != 0);
 	return 0;
 }
 
@@ -63,6 +163,8 @@ int main() {
 
 // Printing the Menu
 void mainMenu() {
+	system("cls");
+	cout << endl;
 	cout << "=========================================" << endl;
 	cout << "     * Code & Claws' Pet Grooming! *     " << endl;
 	cout << "=========================================" << endl;
@@ -79,7 +181,7 @@ int getMenuChoice(int low, int high) {
 	int choice = 0;
 	bool valid = false;
 	while (!valid) {
-		cout << "What are you looking for?" << endl;
+		cout << "\nWhat are you looking for ? " << endl;
 		cin >> choice;
 		if (cin.fail()) {
 			cout << "Invalid, please try again!." << endl;
@@ -109,6 +211,10 @@ void clearInputBuffer() {
 
 //========================================== SUB MENU (CODE) =========================================//
 // KAI JIE PART (Service Management)
+// TUTOR: this part is not complete yet, still the template only.
+// so main menu choice 1 do nothing for now.
+// kai jie u need 5 working functions here. add, update, delete,
+// search, display service. remember to complete this one.
 void serviceMenu() {
 	/*int choice;
 	do {
@@ -126,6 +232,12 @@ void serviceMenu() {
 }
 
 // YEW HONG PART (Booking Management)
+// TUTOR: same here, not complete yet, still the template only.
+// main menu choice 2 do nothing for now.
+// yew hong u need 5 working functions here. create booking, cancel
+// booking, modify booking, search booking, display booking summary.
+// booking is the centre of the system, service and payment both
+// need it, so try to start this one early.
 void bookingMenu() {
 	/*int choice;
 	do {
@@ -144,60 +256,579 @@ void bookingMenu() {
 
 // KHAI SIANG PART (Record Management)
 void recordMenu() {
-	/*int choice;
+	int choiceRMM;
 	do {
-		cout << "=========================================" << endl;
-		cout << "            Record Management     " << endl;
-		cout << "=========================================" << endl;
-		choice = getMenuChoice(put lowest choice, put highest choice);
-		switch (choice) {
-		case 1: first function
+		system("cls");
+		cout << "==========================================" << endl;
+		cout << "        Customer Record Management     " << endl;
+		cout << "==========================================" << endl;
+		cout << "1. Add Customer \n2. Update Customer \n3. Delete Customer \n4. Search Customer \n5. Display All Customers\n0. Back" << endl;
+		choiceRMM = getMenuChoice(1, 5);
+		switch (choiceRMM) {
+		case 1: addCustomer();
 			break;
-		case 2:....
+		case 2: updateCustomer();
+			break;
+		case 3: deleteCustomer();
+			break;
+		case 4: searchCustomer();
+			break;
+		case 5: displayAllCustomers();
+			break;
 		}
 
-	} while (choice != 0); */
-} 
+	} while (choiceRMM != 0);
+}
 
+void addCustomer() {
+	system("cls");
+	cout << "==========================================" << endl;
+	cout << "               Add Customer" << endl;
+	cout << "==========================================" << endl;
 
-// WEI YUAN PART (Transaction Management)
-void paymentMenu() {
-	/*int choice;
+	if (customerCount >= MAX_CUSTOMERS) {
+		cout << "Customer Limit (100) Reached! Please delete some customers before continuing." << endl;
+		recordMenu();
+	}
+
+	CustomerInfo newCustomer;
+
+	//=====Enter Customer ID with validation=====
 	do {
-		cout << "==========================================" << endl;
-		cout << "          Transaction Management    " << endl;
-		cout << "==========================================" << endl;
-		choice = getMenuChoice(put lowest choice, put highest choice);
-		switch (choice) {
-		case 1: first function
-			break;
-		case 2:....
-		}
+		cout << "Enter Customer ID: ";
+		cin >> newCustomer.id;
 
-	} while (choice != 0); */
+		if (newCustomer.id.empty()) {
+			cout << "Customer ID cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else if (isDuplicateID(newCustomer.id)) {
+			cout << "Customer ID already exists. Please enter aa unique ID." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	clearInputBuffer(); //put this outside loop to run once only
+
+	//=====Enter Customer Name with validation=====
+	do {
+		cout << "Enter Customer Name: ";
+		getline(cin, newCustomer.name);
+
+		if (newCustomer.name.empty()) {
+			cout << "Customer Name cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.name.empty());
+
+	//=====Enter Customer Phone with validation=====
+	do {
+		cout << "Enter Customer Phone: ";
+		getline(cin, newCustomer.phone);
+		if (newCustomer.phone.empty()) {
+			cout << "Customer Phone cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.phone.empty());
+
+	//=====Enter Pet Name with validation=====
+	do {
+		cout << "Enter Pet Name: ";
+		getline(cin, newCustomer.petName);
+		if (newCustomer.petName.empty()) {
+			cout << "Pet Name cannot be empty. Please try again." << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	} while (newCustomer.petName.empty());
+
+	//=====Enter Pet Type with Enum function=====
+	newCustomer.petType = selectPetType();
+
+	customers[customerCount] = newCustomer;
+	customerCount++;
+
+	saveAllToFile();
+	cout << "\nCustomer added successfully!" << endl;
 }
 
 
-// ZI QUAN PART (Report Module)
-void reportMenu() {
-	/*int choice;
+void updateCustomer() {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "             Update Customer" << endl;
+	cout << "=========================================" << endl;
+
+	if (isEmpty()) return;
+
+	int index = findCustomerIndex("update");
+	if (index == -1) {
+		return;
+	}
+
+	cin.ignore();
+	cout << "You're Currently updating details for Customer ID: " << customers[index].id << endl;
+
+	cout << "Enter New Customer Name: ";
+	getline(cin, customers[index].name);
+
+	cout << "Enter New Customer Phone: ";
+	getline(cin, customers[index].phone);
+
+	cout << "Enter New Pet Name: ";
+	getline(cin, customers[index].petName);
+
+	customers[index].petType = selectPetType();
+
+	saveAllToFile();
+	cout << "\nCustomer record updated successfully!" << endl;
+}
+
+
+void deleteCustomer() {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "             Delete Customer" << endl;
+	cout << "=========================================" << endl;
+
+	if (isEmpty()) return;
+
+	int index = findCustomerIndex("delete");
+	if (index == -1) {
+		return;
+	}
+
+	for (int i = index; i < customerCount - 1; i++) {
+		customers[i] = customers[i + 1];
+	}
+	customerCount--;
+
+	saveAllToFile();
+	cout << "\nCustomer record deleted successfully!" << endl;
+}
+
+void searchCustomer() {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "             Search Customer" << endl;
+	cout << "=========================================" << endl;
+
+	if (isEmpty()) {
+		cout << "No customer records available." << endl;
+		cout << "Press [ENTER] to return to Customer Record Management page.\n";
+		clearInputBuffer();
+		return;
+	}
+	int index = findCustomerIndex("search");
+	if (index == -1) {
+		cout << "Customer with that ID can't be found.\nPress [ENTER] to return to Customer Record Management page.\n";
+		clearInputBuffer();
+		cin.get();
+		return;
+	}
+		
+
+	cout << "\nCustomer ID: " << customers[index].id;
+	cout << "\nCustomer Name: " << customers[index].name;
+	cout << "\nCustomer Phone: " << customers[index].phone;
+	cout << "\nPet Name: " << customers[index].petName;
+	cout << "\nPet Type: " << petTypeToString(customers[index].petType) << endl;
+	cout << "\nPress [ENTER] to return to Customer Record Management page.\n";
+	clearInputBuffer();
+	cin.get();
+}
+
+void displayAllCustomers() {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "         Displaying All Customer" << endl;
+	cout << "=========================================" << endl;
+
+	if (isEmpty()) return;
+
+	for (int i = 0; i < customerCount; i++) {
+		cout << "\nCustomer [" << (i + 1) << "]";
+		cout << "\nCustomer ID: " << customers[i].id;
+		cout << "\nCustomer Name: " << customers[i].name;
+		cout << "\nCustomer Phone: " << customers[i].phone;
+		cout << "\nPet Name: " << customers[i].petName;
+		cout << "\nPet Type: " << petTypeToString(customers[i].petType) << endl;
+		cout << "-----------------------------------------";
+	}
+	cout << "\nPress [ENTER] to return to Customer Record Management Page.\n";
+	clearInputBuffer();
+}
+
+// Definitions
+PetType selectPetType() {
+	int choice;
+	while (true) {
+		cout << "Select Pet Type:" << endl;
+		cout << "1. Dog" << endl;
+		cout << "2. Cat" << endl;
+		cout << "3. Other" << endl;
+		cout << "Enter choice: ";
+		cin >> choice;
+
+		if (cin.fail() || choice < 1 || choice > 3) {
+			cout << "Invalid choice. Please enter a number between 1 and 3.\n" << endl;
+			clearInputBuffer();
+		}
+		else {
+			clearInputBuffer();
+			return static_cast<PetType>(choice); // turn the integer choice into PetType enum
+		}
+	}
+}
+
+string petTypeToString(PetType type) {
+	switch (type) {
+	case DOG:   return "Dog";
+	case CAT:   return "Cat";
+	case OTHER: return "Other";
+	default:    return "Invalid input";
+	}
+}
+
+PetType stringToPetType(string typeStr) {
+	if (typeStr == "Dog") return DOG;
+	if (typeStr == "Cat") return CAT;
+	return DOG;
+}
+
+void saveAllToFile() {
+	ofstream file("customers.txt");
+	if (!file.is_open()) {
+		cout << "Error: Could not open file for writing." << endl;
+		return;
+	}
+
+	for (int i = 0; i < customerCount; i++) {
+		file << customers[i].id << endl;
+		file << customers[i].name << endl;
+		file << customers[i].phone << endl;
+		file << customers[i].petName << endl;
+		file << petTypeToString(customers[i].petType) << endl;
+	}
+	file.close();
+}
+
+int findCustomerIndex(string actionName) {
+	string targetID;
+	cout << "Enter Customer ID to " << actionName << ": ";
+	cin >> targetID;
+
+	int targetIndex = -1;
+
+	for (int i = 0; i < customerCount; i++) {
+		if (customers[i].id == targetID) {
+			targetIndex = i;
+			break;
+		}
+	}
+
+	if (targetIndex == -1) {
+		cout << "Customer ID not found." << endl;
+		return -1;
+	}
+
+	return targetIndex;
+}
+
+bool isEmpty() {
+	if (customerCount == 0) {
+		cout << "No customer records available." << endl;
+		cout << "Press [ENTER] to return to Customer Record Management page.\n";
+		clearInputBuffer();
+		return true;
+	}
+	return false;
+}	
+
+bool isDuplicateID(string id) {
+	for (int i = 0; i < customerCount; i++) {
+		if (customers[i].id == id) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// WEI YUAN PART (Transaction Management)
+void paymentMenu() {
+	int choice;
+	// TUTOR: p has no starting value. totalAmount, deposit and
+	// balance are all rubbish numbers until case 1 run.
+	// if i choose option 2 first in the demo, i see rubbish.
+	// always give it a starting value:
+	//     Payment p = { 0, 0, 0, "Unpaid" };
+	Payment p;
 	do {
+		cout << "==========================================" << endl;
+		cout << "          Transaction Management         " << endl;
+		cout << "==========================================" << endl;
+		cout << "1. Process Payment" << endl;
+		cout << "2. Display Payment Details" << endl;
+		cout << "3. Generate Invoice" << endl;
+		cout << "4. Update Payment Status" << endl;
+		cout << "5. View Payment History" << endl;
+		cout << "6. Search for a Payment" << endl;
+		cout << "0. Return to Main Menu" << endl;
+		cout << "==========================================" << endl;
+		choice = getMenuChoice(1, 6);
+		switch (choice) {
+		case 1:
+			p = processPayment(p);
+			break;
+		case 2:
+			displayPaymentDetails(p);
+			break;
+		case 3:
+			invoice(p);
+			break;
+		case 4:
+			updatePaymentStatus();
+			break;
+		case 5:
+			paymentHistory();
+			break;
+		case 6:
+			searchPayment();
+			break;
+		default:
+			cout << "Returning to Main Menu..." << endl;
+		}
+	} while (choice != 0);
+}
+
+Payment processPayment(Payment p) {
+	int choice;
+
+	cout << "\n===== Payment =====\n";
+	// TUTOR: ****** BIG BUG ****** nobody ever key in totalAmount.
+	// so this print a rubbish number, and deposit and balance below
+	// are rubbish too. the amount should come from the booking, or
+	// at least ask for it here:
+	//     cout << "Enter total amount: RM"; cin >> p.totalAmount;
+	cout << "Total Amount: RM" << p.totalAmount << endl;
+
+	// Deposit is 50% of total amount
+	p.deposit = p.totalAmount * 0.50;
+	p.balance = p.totalAmount - p.deposit;
+
+	// TUTOR: no fixed << setprecision(2) here, so money print ugly
+	// like RM33.3333 or RM50 instead of RM50.00.
+	// u did it correctly inside invoice(). do the same here and in
+	// displayPaymentDetails().
+	cout << "Deposit (50%): RM" << p.deposit << endl;
+
+	cout << "Deposit to pay: RM" << p.deposit << endl;
+	cout << "Remaining balance need to be pay after services: RM" << p.balance << endl;
+
+
+	cout << "\nChoose payment method: " << endl;
+	cout << "1. Cash" << endl;
+	cout << "2. Online Banking" << endl;
+	cout << "3. E-Wallet" << endl;
+	cout << "4. Help" << endl;
+	cout << "0. Return to Payment Menu" << endl;
+	cout << "Enter your choice: ";
+	choice = getMenuChoice(1, 4);
+	do {
+		switch (choice) {
+		case 1:
+			cout << "\nPayment Method: Cash" << endl;
+			cout << "Please pay the deposit amount in cash at our office." << endl;
+			cout << "Press any key to continue..." << endl;
+			cin.get();
+			// TUTOR: the customer only paid the 50% deposit, but u set
+			// the status to "Paid". the balance is still not settled.
+			// "Deposit Paid" is more correct. i will ask u about this.
+			p.status = "Paid";
+			cout << "\nPayment successful! Thank you for your payment." << endl;
+			break;
+
+		case 2:
+			cout << "\nPayment Method: Online Banking" << endl;
+			cout << "Please transfer the deposit amount to the following bank account: " << endl;
+			cout << "Bank: Maybank" << endl;
+			cout << "Account Number: 1234567890" << endl;
+			cout << "Account Name: ABC Company" << endl;
+			cout << "Please include your name and invoice number in the transfer reference." << endl;
+			cout << "Press any key after you have finished the transfer..." << endl;
+			cin.get();
+			p.status = "Paid";
+			cout << "\nPayment successful! Thank you for your payment." << endl;
+			break;
+
+		case 3:
+			cout << "\nPayment Method: E-Wallet" << endl;
+			cout << "Please transfer the deposit amount to the following e-wallet account: " << endl;
+			cout << "Account Number: 0123456789" << endl;
+			cout << "Account Name: ABC Company" << endl;
+			cout << "Press any key to continue..." << endl;
+			cin.get();
+			p.status = "Paid";
+			cout << "\nPayment successful! Thank you for your payment." << endl;
+			break;
+
+		case 4:
+			cout << "\nPlease contact us if you need assistance." << endl;
+			cout << "Email: abc@gmail.com" << endl;
+			cout << "Phone: 012-3456789" << endl;
+			cout << "Press any key to continue..." << endl;
+			cin.get();
+			break;
+
+		default:
+			cout << "\nReturning to Payment Menu..." << endl;
+			break;
+		}
+		// TUTOR: ****** THIS FREEZE UR PROGRAM, FIX IT TODAY ******
+		// getMenuChoice(1,4) can return 0. then choice <= 0 is true, so
+		// this loop never stop. it print "Returning to Payment Menu..."
+		// forever and i have to kill the program.
+		// choice is never asked again inside the loop so it cannot change.
+		// move   choice = getMenuChoice(1,4);   to inside the do, and make
+		// this line   } while (choice != 0);
+	} while (choice != 0);
+
+	return p;
+}
+
+void displayPaymentDetails(const Payment p) {
+	int choice;
+	cout << "\n===== Payment Details =====\n";
+	// TUTOR: money format missing here too. add this line before the
+	// 3 lines below, same as what u did in invoice().
+	//     cout << fixed << setprecision(2);
+	cout << "Total Amount: RM" << p.totalAmount << endl;
+	cout << "Deposit: RM" << p.deposit << endl;
+	cout << "Balance: RM" << p.balance << endl;
+	cout << "Status: " << p.status << endl;
+	do {
+		cout << "\n1. Update Payment Status" << endl;
+		cout << "2. Generate Invoice" << endl;
+		cout << "0. Return to Payment Menu" << endl;
+		cout << "Enter your choice: ";
+		choice = getMenuChoice(1, 2);
+		if (choice == 1) {
+			updatePaymentStatus();
+			break;
+		}
+		else if (choice == 2) {
+			invoice(p);
+			break;
+		}
+		else if (choice == 0) {
+			break;
+		}
+		else {
+			cout << "Invalid choice. Please try again." << endl;
+		}
+	} while (choice <= 0 || choice > 2);
+}
+
+void invoice(const Payment p) {
+	int choice;
+
+	cout << "\n";
+	cout << "========================================\n";
+	cout << "              PET GROOMING\n";
+	cout << "                 INVOICE\n";
+	cout << "========================================\n";
+
+	cout << fixed << setprecision(2);
+	cout << "Total Amount       : RM" << p.totalAmount << endl;
+	cout << "Deposit Paid (50%) : RM" << p.deposit << endl;
+	cout << "Balance            : RM" << p.balance << endl;
+
+	cout << "========================================\n";
+
+	cout << "\nChoose invoice option:\n";
+	cout << "1. Print Invoice\n";
+	cout << "2. Email E-Invoice\n";
+	cout << "3. Back\n";
+	cout << "Enter your choice: ";
+	choice = getMenuChoice(1, 3);
+
+	switch (choice) {
+	case 1:
+		cout << "\nPrinting invoice...\n";
+		cout << "Invoice printed successfully.\n";
+		break;
+
+	case 2:
+		cout << "\nE-Invoice selected.\n";
+		cout << "Sending invoice to email...\n";
+		cout << "E-Invoice sent successfully.\n";
+		break;
+
+	case 3:
+		cout << "\nReturning to main menu...\n";
+		break;
+
+	default:
+		cout << "\nInvalid choice.\n";
+	}
+}
+// TUTOR: these 3 not complete yet, the body is still empty.
+// wei yuan u got 3 working out of 6, so u are halfway.
+// paymentHistory and searchPayment both need the array, so do those
+// two after the group add the arrays. remember to complete all 3.
+void updatePaymentStatus() {} // Function to update payment status
+void paymentHistory() {} // Function to view payment history
+void searchPayment() {} // Function to search for a payment
+
+// ZI QUAN PART (Report Module)
+// TUTOR: zi quan, ur menu already work but the module not complete
+// yet, all 3 functions below are still empty.
+// u need 5 working ones: summary report, detailed report, calculate
+// statistics, SORT RECORDS, and display analysis.
+// the sorting for the whole group sit inside ur module, so remember
+// to include it. u can start with fake data first if the other
+// modules not ready yet.
+void reportMenu() {
+	int choice;
+	do {
+		system("cls");
 		cout << "=========================================" << endl;
 		cout << "               Report Page     " << endl;
 		cout << "=========================================" << endl;
-		cout << "1. Summary\n" << "2. Detailed Report\n" << "3. Analysis" << endl;
-		choice = getMenuChoice(1,3);
+		cout << "1. Summary\n2. Detailed Report\n3. Analysis\n0. Back" << endl;
+		choice = getMenuChoice(1, 3);
 		switch (choice) {
-		case 1: 
-
+		case 1:
+			displaySummary();
 			break;
 		case 2:
-
+			displayReport();
 			break;
 		case 3:
-			
-			break;	
+			displayAnalysis();
+			break;
 		}
-	} while (choice != 0); */
-} 
+	} while (choice != 0);
+}
 
+// this is where ur for loop and ur bubble sort will live.
+// easiest one to start with is displaySummary, just loop through the
+// customer array with a for loop and count the total.
+// after that do the sort, by name or by pet type, either also can.
+void displaySummary() {
+	cout << customerCount << "\nPress Enter to Continue.\n";
+	clearInputBuffer();
+}
+void displayReport() {}
+void displayAnalysis() {}
