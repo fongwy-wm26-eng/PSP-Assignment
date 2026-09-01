@@ -22,7 +22,7 @@
 
 using namespace std;
 
-//=============================================== ENUM ==================================================//
+//============================================ ENUM ===============================================//
 enum PetType {
 	DOG = 1,
 	CAT,
@@ -31,14 +31,6 @@ enum PetType {
 
 
 //============================================ STRUCTURES ===============================================//
-//Service Struct (Kai Jie)
-struct Service {
-	string serviceID;
-	string serviceName;
-	string description;
-	double price = 0.0;
-};
-
 //Customer Struct (Khai Siang)
 struct CustomerInfo {
 	string id = "";
@@ -57,20 +49,7 @@ struct Payment {
 };
 
 
-//========================================== Data Declaration ===========================================//
-//For Service Management
-char returnNumber;
-char serviceNumber;
-char updateNumber;
-char goodnumber;
-char deleteNumber;
-char searchNumber;
-char displayNumber;
-Service services[100];
-int serviceCount;
-bool found = false;
-
-//For Customer Management
+//============================================ CONSTANTS ================================================//
 const int MAX_CUSTOMERS = 100;
 CustomerInfo customers[MAX_CUSTOMERS];
 int customerCount = 0;
@@ -84,6 +63,7 @@ void loadFromFile();
 
 //---------------------------------------------- Sub Menus ----------------------------------------------//
 // KAI JIE PART (Service Management)
+void serviceMenu();
 void petgroomingSystem();
 void typeService();
 void addService();
@@ -96,6 +76,23 @@ void load_service();
 void output_service();
 void saveService();
 
+char returnNumber;
+char serviceNumber;
+char updateNumber;
+char goodnumber;
+char deleteNumber;
+char searchNumber;
+char displayNumber;
+struct Service {
+	string serviceID;
+	string serviceName;
+	string description;
+	double price = 0.0;
+};
+Service services[100];
+int serviceCount;
+
+bool found = false;
 
 // YEW HONG PART (Booking Management)
 void bookingMenu();
@@ -174,7 +171,7 @@ int main() {
 		mainMenu();
 		choice = getMenuChoice(1, 5);
 		switch (choice) {
-		case 1: petgroomingSystem();
+		case 1: serviceMenu();
 			break;
 		case 2: bookingMenu();
 			break;
@@ -333,9 +330,6 @@ void saveService()
 
 void petgroomingSystem() {
 	system("cls");
-	cout << "=========================================\n";
-	cout << "             Service Management\n";
-	cout << "=========================================\n";
 	cout << "1. Add Service" << endl;
 	cout << "2. Update Service" << endl;
 	cout << "3. Delete Service" << endl;
@@ -767,8 +761,8 @@ void updateService() {
 }
 
 void searchService() {
-	system("cls");
 	string serviceID;
+	system("cls");
 	cout << "================================================================" << endl;
 	cout << "                        Search service " << endl;
 	cout << "================================================================" << endl;
@@ -894,9 +888,9 @@ void displayServices() {
 }
 
 void deleteService() {
-	system("cls");
 	string serviceID;
 	char confirmation;
+	system("cls");
 	cout << "================================================================" << endl;
 	cout << "                        Delete service " << endl;
 	cout << "================================================================" << endl;
@@ -1190,9 +1184,6 @@ void deleteCustomer() {
 
 	saveAllToFile();
 	cout << "\nCustomer record deleted successfully!" << endl;
-	cout << "Press [ENTER] to return to Customer Record Management page.\n";
-	clearInputBuffer();
-	cin.get();
 }
 
 void searchCustomer() {
@@ -1214,7 +1205,7 @@ void searchCustomer() {
 		cin.get();
 		return;
 	}
-
+		
 
 	cout << "\nCustomer ID: " << customers[index].id;
 	cout << "\nCustomer Name: " << customers[index].name;
@@ -1331,7 +1322,7 @@ bool isEmpty() {
 		return true;
 	}
 	return false;
-}
+}	
 
 bool isDuplicateID(string id) {
 	for (int i = 0; i < customerCount; i++) {
