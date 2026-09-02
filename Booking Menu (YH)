@@ -22,7 +22,7 @@ using namespace std;
 
 //Booking Struct (Yew Hong)
 struct Booking {
-	float times[8] = { 0 }; //define times array
+	float times[14] = { 0 }; //define times array
 	char determine;
 	int totalBooking;
 	int totalCompleted;
@@ -36,29 +36,27 @@ struct Payment {
 	string status;
 };
 
-void Pay(Booking b, Payment p) {
-	cout << "Bro chill it's just a prank";
-}
 
 void cancel(Booking b) {
-	Payment p;
 	int cancel;
 	while (true) {
-		cout << "What service booking history customer wants to cancel of?\n1. Bath & Brush\n2. Nail Clipping" << endl;
-		cout << "3. Skin & Coat Treatment\n4. De-shedding Treatment\n5. Return\nPlease enter the number 1-5:";
+		cout << "What service booking history customer wants to cancel of?\n";
+		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
+		cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
+		cout << "Please enter the number 1-8 :";
 		cin >> cancel;
 		switch (cancel) {
 		case 1:
 			if (b.times[0] != 0) {
 				cout << "Here is the original booking time : " << b.times[0] <<  endl;
-				if (b.times[1] != 0)
+				if (b.times[1] != 0) //determine if customer booking two time
 					cout << "2nd Booking time\t: " << b.times[1] << endl;
 				cout << "Please enter 1 to comfirm cancel or enter other key to return :";
 				cin >> b.determine;
 				if (b.determine == 1) {
 					b.times[0] = 0;
 					b.totalBooking--;
-					if (b.times[1] != 0) {
+					if (b.times[1] != 0) { //subtract two time for booking two time case
 						b.times[1] = 0;
 						b.totalBooking--;
 					}
@@ -153,6 +151,85 @@ void cancel(Booking b) {
 				break;
 			}
 		case 5:
+			if (b.times[8] != 0) {
+				cout << "Here is the original booking time : " << b.times[8] << endl;
+				if (b.times[9] != 0)
+					cout << "2nd Booking time\t: " << b.times[9] << endl;
+				cout << "Please enter 1 to comfirm cancel or enter other key to return :";
+				cin >> b.determine;
+				if (b.determine == 1) {
+					b.times[8] = 0;
+					b.totalBooking--;
+					if (b.times[9] != 0) {
+						b.times[9] = 0;
+						b.totalBooking--;
+					}
+					cout << "The boooking time had canceled." << endl;
+					return;
+				}
+				else {
+					return;
+				}
+
+			}
+
+			else {
+				cout << "No customer booking this service." << endl;
+				break;
+			}
+		case 6:
+			if (b.times[10] != 0) {
+				cout << "Here is the original booking time : " << b.times[10] << endl;
+				if (b.times[11] != 0)
+					cout << "2nd Booking time\t: " << b.times[11] << endl;
+				cout << "Please enter 1 to comfirm cancel or enter other key to return :";
+				cin >> b.determine;
+				if (b.determine == 1) {
+					b.times[10] = 0;
+					b.totalBooking--;
+					if (b.times[11] != 0) {
+						b.times[11] = 0;
+						b.totalBooking--;
+					}
+					cout << "The boooking time had canceled." << endl;
+					return;
+				}
+				else {
+					return;
+				}
+
+			}
+			else {
+				cout << "No customer booking this service." << endl;
+				break;
+			}
+		case 7:
+			if (b.times[12] != 0) {
+				cout << "Here is the original booking time : " << b.times[12] << endl;
+				if (b.times[13] != 0)
+					cout << "2nd Booking time\t: " << b.times[13] << endl;
+				cout << "Please enter 1 to comfirm cancel or enter other key to return :";
+				cin >> b.determine;
+				if (b.determine == 1) {
+					b.times[12] = 0;
+					b.totalBooking--;
+					if (b.times[13] != 0) {
+						b.times[13] = 0;
+						b.totalBooking--;
+					}
+					cout << "The boooking time had canceled." << endl;
+					return;
+				}
+				else {
+					return;
+				}
+
+			}
+			else {
+				cout << "No customer booking this service." << endl;
+				break;
+			}
+		case 8:
 			return;
 		default:
 			cout << "Invalid number, please try again." << endl;
@@ -164,15 +241,17 @@ void review(Booking b) {
 	Payment p;
 	int review;
 	while (true) {
-		cout << "What service booking history you like to review of?\n1. Bath & Brush\n2. Nail Clipping" << endl;
-		cout << "3. Skin & Coat Treatment\n4. De-shedding Treatment\n5. Return\nPlease enter the number 1-5:";
+		cout << "What service booking history you like to review of?\n";
+		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
+		cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
+		cout << "Please enter the number 1-8 :";
 		cin >> review;
 		switch (review) {
 		case 1:
 			if (b.times[0] != 0) {
 				cout << "Here is the summary of the booking." << endl;
 				cout << setfill('=') << setw(58) << "" << endl;
-				cout << "Booking service\t: Bath & Brush" << endl;
+				cout << "Booking service\t: Basic Bath" << endl;
 				cout << "Booking time\t: " << b.times[0] << endl;
 				do {
 					cout << "2nd Booking time: " << b.times[1] << endl;
@@ -191,7 +270,7 @@ void review(Booking b) {
 			if (b.times[2] != 0) {
 				cout << "Here is the summary of the booking." << endl;;
 				cout << setfill('=') << setw(58) << "" << endl;
-				cout << "Booking service\t: Nail Clipping" << endl;
+				cout << "Booking service\t: Hair Trimming" << endl;
 				cout << "Booking time\t: " << b.times[2] << endl;
 				do {
 					cout << "2nd Booking time: " << b.times[3] << endl;
@@ -210,7 +289,7 @@ void review(Booking b) {
 			if (b.times[4] != 0) {
 				cout << "Here is the summary of the booking." << endl;
 				cout << setfill('=') << setw(58) << "" << endl;
-				cout << "Booking service\t: Skin & Coat Treatment" << endl;
+				cout << "Booking service\t: Nail Clipping" << endl;
 				cout << "Booking time\t: " << b.times[4] << endl;
 				do {
 					cout << "2nd Booking time: " << b.times[5] << endl;
@@ -229,7 +308,7 @@ void review(Booking b) {
 			if (b.times[6] != 0) {
 				cout << "Here is the summary of the booking." << endl;
 				cout << setfill('=') << setw(58) << "" << endl;
-				cout << "Booking service\t: De-shedding Treatment" << endl;
+				cout << "Booking service\t: Teeth Cleaning" << endl;
 				cout << "Booking time\t: " << b.times[6] << endl;
 				do {
 					cout << "2nd Booking time: " << b.times[7] << endl;
@@ -245,6 +324,63 @@ void review(Booking b) {
 				break;
 			}
 		case 5:
+			if (b.times[8] != 0) {
+				cout << "Here is the summary of the booking." << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				cout << "Booking service\t: Ear Cleaning" << endl;
+				cout << "Booking time\t: " << b.times[8] << endl;
+				do {
+					cout << "2nd Booking time: " << b.times[9] << endl;
+					break;
+				} while (b.times[9] != 0);
+				cout << "Booking deposit\t: RM " << p.deposit << endl;
+				cout << "Total amount\t: RM " << p.totalAmount << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				return;
+			}
+			else {
+				cout << "Customer did not booking this service." << endl;
+				break;
+			}
+		case 6:
+			if (b.times[10] != 0) {
+				cout << "Here is the summary of the booking." << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				cout << "Booking service\t: Full Grooming" << endl;
+				cout << "Booking time\t: " << b.times[10] << endl;
+				do {
+					cout << "2nd Booking time: " << b.times[11] << endl;
+					break;
+				} while (b.times[11] != 0);
+				cout << "Booking deposit\t: RM " << p.deposit << endl;
+				cout << "Total amount\t: RM " << p.totalAmount << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				return;
+			}
+			else {
+				cout << "Customer did not booking this service." << endl;
+				break;
+			}
+		case 7:
+			if (b.times[12] != 0) {
+				cout << "Here is the summary of the booking." << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				cout << "Booking service\t: Flea Treatment" << endl;
+				cout << "Booking time\t: " << b.times[12] << endl;
+				do {
+					cout << "2nd Booking time: " << b.times[13] << endl;
+					break;
+				} while (b.times[13] != 0);
+				cout << "Booking deposit\t: RM " << p.deposit << endl;
+				cout << "Total amount\t: RM " << p.totalAmount << endl;
+				cout << setfill('=') << setw(58) << "" << endl;
+				return;
+			}
+			else {
+				cout << "Customer did not booking this service." << endl;
+				break;
+			}
+		case 8:
 			return;
 		default:
 			cout << "Invalid number, please try again." << endl;
@@ -254,12 +390,11 @@ void review(Booking b) {
 
 
 void booking(Booking b) {
-	Payment p;
 	while (true) {
 		int service;
 		cout << "Current available pet grooming service :\n";
-		cout << "1.Bath & Brush \n2.Nail Clipping \n3.Skin & Coat Treatment \n4.De-shedding Treatment\n";
-		cout << "5.Return" << endl;
+		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
+		cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
 		cout << "Please enter the number of service customer want to book :";//asking user to select the service customer prefer
 		cin >> service;
 
@@ -370,6 +505,84 @@ void booking(Booking b) {
 		}
 
 		else if (service == 5) {
+			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+			cin >> b.times[8];
+			b.totalBooking++;
+			cout << "\nWould customer like to continue booking other times?" << endl;
+			cout << "Press 1 to cancel, any other key to continue :";
+			cin >> b.determine;
+			if (b.determine == '1') {
+				cout << "Thank you for your filling." << endl;
+				return;
+			}
+			else {
+				do {
+					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+					cin >> b.times[9];
+					b.totalBooking++;
+					if (b.times[8] == b.times[9]) {
+						cout << "The booking time crashed, please try again." << endl;
+						b.totalBooking--;
+					}
+				} while (b.times[8] == b.times[9]);
+				cout << "The time slot was all filled, thank you." << endl;
+				return;
+			}
+		}
+
+		else if (service == 6) {
+			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+			cin >> b.times[10];
+			b.totalBooking++;
+			cout << "\nWould customer like to continue booking other times?" << endl;
+			cout << "Press 1 to cancel, any other key to continue :";
+			cin >> b.determine;
+			if (b.determine == '1') {
+				cout << "Thank you for your filling." << endl;
+				return;
+			}
+			else {
+				do {
+					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+					cin >> b.times[11];
+					b.totalBooking++;
+					if (b.times[10] == b.times[11]) {
+						cout << "The booking time crashed, please try again." << endl;
+						b.totalBooking--;
+					}
+				} while (b.times[10] == b.times[11]);
+				cout << "The time slot was all filled, thank you." << endl;
+				return;
+			}
+		}
+
+		else if (service == 7) {
+			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+			cin >> b.times[12];
+			b.totalBooking++;
+			cout << "\nWould customer like to continue booking other times?" << endl;
+			cout << "Press 1 to cancel, any other key to continue :";
+			cin >> b.determine;
+			if (b.determine == '1') {
+				cout << "Thank you for your filling." << endl;
+				return;
+			}
+			else {
+				do {
+					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+					cin >> b.times[13];
+					b.totalBooking++;
+					if (b.times[12] == b.times[13]) {
+						cout << "The booking time crashed, please try again." << endl;
+						b.totalBooking--;
+					}
+				} while (b.times[12] == b.times[13]);
+				cout << "The time slot was all filled, thank you." << endl;
+				return;
+			}
+		}
+
+		else if (service == 8) {
 			return;
 		}
 
