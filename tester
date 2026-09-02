@@ -75,6 +75,8 @@ void initializeService();
 void load_service();
 void output_service();
 void saveService();
+void validaddservice();
+
 
 char returnNumber;
 char serviceNumber;
@@ -1000,44 +1002,7 @@ void petgroomingSystem() {
 	}
 }
 
-
-void typeService() {
-	cout << "=================================================================" << endl;
-	cout << "                     Pet Grooming Services               " << endl;
-	cout << "=================================================================" << "\n" << endl;
-
-
-	cout << left;
-
-	cout << setw(15) << "Service ID"
-		<< setw(20) << "Service Name"
-		<< setw(60) << "Description"
-		<< setw(10) << "Price" << endl;
-
-	for (int i = 0; i < serviceCount; i++) {
-		cout << setw(15) << services[i].serviceID
-			<< setw(20) << services[i].serviceName
-			<< setw(60) << services[i].description
-			<< "RM" << fixed << setprecision(2)
-			<< services[i].price << endl;
-	}
-
-	cout << "Enter 1 To Exit To Last Page." << endl;
-
-	// Implementation for adding a service/item
-}
-
-void addService()
-{
-	cout << "==============================" << endl;
-	cout << "        Add New Service       " << endl;
-	cout << "==============================" << endl;
-
-	if (serviceCount >= 100)
-	{
-		cout << "Service list is full!" << endl;
-		return;
-	}
+void validaddservice() {
 	bool validateID;
 
 	do
@@ -1050,7 +1015,8 @@ void addService()
 		// User enters 1 → return to main menu
 		if (services[serviceCount].serviceID == "1")
 		{
-			return;
+			petgroomingSystem();
+			break;
 		}
 
 		// Check length
@@ -1103,6 +1069,49 @@ void addService()
 		validateID = false;
 
 	} while (validateID);
+
+}
+
+void typeService() {
+	cout << "=================================================================" << endl;
+	cout << "                     Pet Grooming Services               " << endl;
+	cout << "=================================================================" << "\n" << endl;
+
+
+	cout << left;
+
+	cout << setw(15) << "Service ID"
+		<< setw(20) << "Service Name"
+		<< setw(60) << "Description"
+		<< setw(10) << "Price" << endl;
+
+	for (int i = 0; i < serviceCount; i++) {
+		cout << setw(15) << services[i].serviceID
+			<< setw(20) << services[i].serviceName
+			<< setw(60) << services[i].description
+			<< "RM" << fixed << setprecision(2)
+			<< services[i].price << endl;
+	}
+
+	cout << "Enter 1 To Exit To Last Page." << endl;
+
+	// Implementation for adding a service/item
+}
+
+void addService()
+{
+	cout << "==============================" << endl;
+	cout << "        Add New Service       " << endl;
+	cout << "==============================" << endl;
+
+	if (serviceCount >= 100)
+	{
+		cout << "Service list is full!" << endl;
+		return;
+	}
+	
+	validaddservice();
+
 	cout << "Enter Service Name: ";
 	cin.ignore();
 	getline(cin, services[serviceCount].serviceName);
