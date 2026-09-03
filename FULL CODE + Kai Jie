@@ -93,6 +93,7 @@ struct Service {
 	string serviceName;
 	string description;
 	double price = 0.0;
+	int timesbooked = 0;
 };
 Service services[100];
 int serviceCount;
