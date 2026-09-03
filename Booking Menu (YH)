@@ -1,3 +1,14 @@
+// YEW HONG PART (Booking Management)
+void bookingMenu();
+void booking(Booking& b);
+void review(string customerID);
+void cancel(Booking& b);
+double getServicePrice(int serviceNumber);
+void calculateTotal(Booking& b);
+void saveBooking(Booking b);
+void updateBooking(Booking b);
+bool findBooking(string customerID, Booking& b);
+
 //Booking Struct (Yew Hong)
 struct Booking {
 	string customerID = "";
