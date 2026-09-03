@@ -1,3 +1,13 @@
+//Booking Struct (Yew Hong)
+struct Booking {
+	string customerID = "";
+	float times[14] = { 0 };
+	char determine = '0';
+	int totalBooking = 0;
+	int totalCompleted = 0;
+	double totalAmount = 0.0;
+};
+
 // YEW HONG PART (Booking Management)
 	// TUTOR: same here, not complete yet, still the template only.
 	// main menu choice 2 do nothing for now.
