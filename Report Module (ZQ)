@@ -1,15 +1,86 @@
+void reportMenu();
+void displaySummary();
+void displayDetailed();
+void displayAnalysis();
+int statistics();
+
+void serviceReport();
+void bookingReport();
+void customerReport();
+void paymentReport();
+
+
 void reportMenu() {
 	int choice;
 	do {
+		system("cls");
 		cout << "=========================================" << endl;
-		cout << "      hi Me     " << endl;
+		cout << "               Report Page     " << endl;
 		cout << "=========================================" << endl;
-		choice = getMenuChoice();
+		cout << "1. Summary\n2. Detailed Report\n3. Analysis\n0. Back" << endl;
+		choice = getMenuChoice(1, 3);
 		switch (choice) {
-		case 1: 
+		case 1:
+			displaySummary();
 			break;
 		case 2:
+			displayDetailed();
+			break;
+		case 3:
+			displayAnalysis();
+			break;
 		}
+	} while (choice != 0);
+}
 
-	} while (choice != 0); 
-} 
+// this is where ur for loop and ur bubble sort will live.
+// easiest one to start with is displaySummary, just loop through the
+// customer array with a for loop and count the total.
+// after that do the sort, by name or by pet type, either also can.
+void displaySummary() {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "             Summary Report" << endl;
+	cout << "=========================================" << endl;
+	cout << "Total Current Sevices" << endl;
+	cout << "Total Current Bookings : " << endl;
+	cout << "Total Current Customers : " << customerCount << endl;
+	cout << "Total Bookings Made : " << endl;
+	cout << "Total Bookings Completed : " << endl;
+	cout << "Total Revenue (RM) : " << endl << endl;
+	cout << "Press [ENTER] to return back to Report Page." << endl;
+	cin.get();
+	reportMenu();
+}
+
+void displayDetailed() {
+	int choice = 0;
+	do {
+	system("cls");
+	cout << "=========================================" << endl;
+	cout << "             Detailed Report" << endl;
+	cout << "=========================================" << endl;
+	cout << "1. Services Data Report\n2.Bookings Data Report\n3. Customers Data Report\n4. Payments Data Report\n\n";
+	choice = getMenuChoice(1,4);
+	
+		switch (choice) {
+		case 1:	serviceReport();
+			break;
+		case 2:	bookingReport();
+			break;
+		case 3:	customerReport();
+			break;
+		case 4: paymentReport();
+			break;
+		}
+	} while (choice != 0);
+}
+
+//Detailed Reports
+void seviceReport() {
+
+
+}
+
+
+void displayAnalysis() {}
