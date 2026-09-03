@@ -186,9 +186,9 @@ void updateBooking(Booking b) {
 
 void cancel(Booking& b) {		//to change all of the value 
 	int cancel;
+	cout << "Please enter customer id before proceed :";
+	cin >> b.customerID;
 	while (true) {
-		cout << "Please enter customer id before proceed :";
-		cin >> b.customerID;
 		cout << "What service booking history customer wants to cancel of?\n";
 		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
 		cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
@@ -441,7 +441,8 @@ bool findBooking(string customerID, Booking& b) {
 
 void review(string customerID) {		//list out booking history by customer id
 	Booking b;
-
+	cout << "Please enter customer id before proceed :";
+	cin >> b.customerID;
 	if (!findBooking(customerID, b)) {
 		cout << "No booking history found for this customer.\n";
 		return;
@@ -514,11 +515,10 @@ void booking(Booking& b) {
 	if (findBooking(b.customerID, oldBooking)) {		//get old data when it's not the first time of customer booking
 		b = oldBooking;
 	}
-
+	cout << "Please enter customer id before proceed :";
+	cin >> b.customerID;
 	while (true) {
 		int service;
-		cout << "Please enter customer id before proceed :";
-		cin >> b.customerID;
 		cout << "Current available pet grooming service :\n";
 		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
 		cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
