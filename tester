@@ -1011,7 +1011,7 @@ void petgroomingSystem() {
 	}
 	else if (choice == '0') {
 		cout << "Return to Main Menu" << endl;
-		mainMenu();
+		main();
 	}
 	else if (choice < '0' || choice > '5') {
 		cout << endl << "Invalid choice. Please enter a valid option." << endl;
