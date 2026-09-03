@@ -1,8 +1,86 @@
-int main() {
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+//============================================ CONSTANTS ================================================//
+const int MAX_MEMBERS = 100;
+
+
+struct Payment {
+	string customerID = "";
+	double totalAmount = 0.0;
+	double deposit = 0.0;
+	double balance = 0.0;
+	double totalEarn = 0.0;
+	string status = "Pending";
+	int cashCount = 0;
+	int onlineBankingCount = 0;
+	int eWalletCount = 0;
+};
+
+// Payment array (Wei Yuan)
+const int MAX_PAYMENTS = 100;
+Payment payments[MAX_PAYMENTS];
+int paymentCount = 0;
+
+//========================================= FUNCTION PROTOTYPES =========================================//
+//                              [Guys declare your functions here first!!!]                              //
+
+//---------------------------------------------- Main Menu ----------------------------------------------//
+void displayHeader();
+void mainMenu();
+void clearInputBuffer();
+int getMenuChoice(int low, int high); // (int low, int high) --> we call this parameters
+
+//---------------------------------------------- Sub Menus ----------------------------------------------//
+// KAI JIE PART (Service Management)
+void serviceMenu();
+
+// YEW HONG PART (Booking Management)
+void bookingMenu();
+
+// KHAI SIANG PART (Record Management)
+void recordMenu();
+
+// WEI YUAN PART (Transaction Management)
+
+
+void paymentMenu();
+Payment processPayment(Payment p); // Function to process payment
+bool collectPaymentMethod(Payment& p, bool isFullPayment); // Handles the payment-method sub-menu
+void displayPaymentDetails(Payment p); // Function to display payment details
+void invoice(const Payment p); // Function to generate invoice
+Payment updatePaymentStatus(Payment p); // Function to update payment status
+void paymentHistory(); // Function to view payment history
+void searchPayment(); // Function to search for a payment
+void savePaymentsToFile();
+void loadPaymentsFromFile();
+bool isEmptyPayments();
+int findPaymentIndex(string id);
+void storeOrUpdatePayment(Payment p);
+
+string getCustomerName(string id);
+void getServiceInfoByPosition(int pos, string& nameOut, double& priceOut); // fills name+price from data.txt in one pass
+double showCustomerBooking(string id); // prints breakdown, returns totalAmount, -1 if not found
+
+// ZI QUAN PART (Report Module)
+void reportMenu();
+void summaryReport();
+void detailedReport();
+int statistics();
+
+//=========================================== MAIN FUNCTION =============================================//
+
+int mai() {
+	loadPaymentsFromFile();
+
 	int choice;
 	do {
 		mainMenu();
-		choice = getMenuChoice(1,5);
+		choice = getMenuChoice(1, 5);
 		switch (choice) {
 		case 1: serviceMenu();
 			break;
@@ -10,12 +88,724 @@ int main() {
 			break;
 		case 3: recordMenu();
 			break;
-		case 4: what();
+		case 4: paymentMenu();
 			break;
 		case 5: reportMenu();
 			break;
 		}
 
-	} while (choice !=0);
+	} while (choice != 0);
 	return 0;
+}
+
+
+//========================================== MAIN MENU (CODE) ==========================================//
+
+// Printing the Menu
+void mainMenu() {
+	cout << "=========================================" << endl;
+	cout << "     * Code & Claws' Pet Grooming! *     " << endl;
+	cout << "=========================================" << endl;
+	cout << "1. Service Management" << endl;
+	cout << "2. Booking Management" << endl;
+	cout << "3. Customer Management" << endl;
+	cout << "4. Transaction Management" << endl;
+	cout << "5. Reports" << endl;
+	cout << "0. Exit" << endl;
+}
+
+// This works as an Input Filter
+int getMenuChoice(int low, int high) {
+	int choice = 0;
+	bool valid = false;
+	while (!valid) {
+		cout << "What are you looking for?" << endl;
+		cin >> choice;
+		if (cin.fail()) {
+			cout << "Invalid, please try again!." << endl;
+			clearInputBuffer();
+		}
+		else if (choice == 0) {
+			clearInputBuffer();
+			valid = true;
+		}
+		else if (choice < low || choice > high) {
+			cout << "Please choose between (" << low << " and " << high << ")" << endl;
+			clearInputBuffer();
+		}
+		else {
+			clearInputBuffer();
+			valid = true;
+		}
+	}
+	return choice;
+}
+
+// Clearing input buffer to avoid \n bug
+void clearInputBuffer() {
+	cin.clear();
+	cin.ignore(10000, '\n');
+}
+
+//========================================== SUB MENU (CODE) =========================================//
+// KAI JIE PART (Service Management)
+void serviceMenu() {
+	/*int choice;
+	do {
+		cout << "==========================================" << endl;
+		cout << "            Service Management     " << endl;
+		cout << "==========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+// YEW HONG PART (Booking Management)
+void bookingMenu() {
+	/*int choice;
+	do {
+		cout << "==========================================" << endl;
+		cout << "            Booking Management     " << endl;
+		cout << "==========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice){
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+// KHAI SIANG PART (Record Management)
+void recordMenu() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "            Record Management     " << endl;
+		cout << "=========================================" << endl;
+		choice = getMenuChoice(put lowest choice, put highest choice);
+		switch (choice) {
+		case 1: first function
+			break;
+		case 2:....
+		}
+
+	} while (choice != 0); */
+}
+
+
+// WEI YUAN PART (Transaction Management)
+void paymentMenu() {
+	int choice;
+	Payment p;
+	do {
+		cout << "==========================================" << endl;
+		cout << "          Transaction Management         " << endl;
+		cout << "==========================================" << endl;
+		cout << "1. Process Payment" << endl;
+		cout << "2. Display Payment Details" << endl;
+		cout << "3. Generate Invoice" << endl;
+		cout << "4. Update Payment Status" << endl;
+		cout << "5. View Payment History" << endl;
+		cout << "6. Search for a Payment" << endl;
+		cout << "0. Return to Main Menu" << endl;
+		cout << "==========================================" << endl;
+		choice = getMenuChoice(1, 6);
+		switch (choice) {
+		case 1:
+			p = processPayment(p);
+			// Only persist real records - skip blanks left by a cancelled/failed lookup
+			if (!p.customerID.empty())
+				storeOrUpdatePayment(p);
+			break;
+		case 2:
+			displayPaymentDetails(p);
+			break;
+		case 3:
+			invoice(p);
+			break;
+		case 4:
+			p = updatePaymentStatus(p);
+			if (!p.customerID.empty())
+				storeOrUpdatePayment(p);
+			break;
+		case 5:
+			paymentHistory();
+			break;
+		case 6:
+			searchPayment();
+			break;
+		default:
+			cout << "Returning to Main Menu..." << endl;
+		}
+	} while (choice != 0);
+}
+
+// Handles the "choose payment method" sub-menu shared by both the deposit
+// and full-payment flows. Sets p.status to "Fully Paid" or "Deposit Paid"
+// (based on isFullPayment) and bumps the right method counter ONLY when a
+// payment actually completes. Returns true if payment completed, false if
+// the user backed out.
+bool collectPaymentMethod(Payment& p, bool isFullPayment) {
+	int choice;
+	bool completed = false;
+	do {
+		cout << "\nChoose payment method: " << endl;
+		cout << "1. Cash" << endl;
+		cout << "2. Online Banking" << endl;
+		cout << "3. E-Wallet" << endl;
+		cout << "4. Help" << endl;
+		cout << "0. Return to Payment Menu" << endl;
+		cout << "Enter your choice: ";
+		choice = getMenuChoice(1, 4);
+		char input;
+		switch (choice) {
+		case 1:
+			cout << "\nPayment Method: Cash" << endl;
+			cout << "Please pay the amount in cash at our office." << endl;
+			cout << "\nPress any key after you have finished the payment or press '0' to return to Payment Menu" << endl;
+			cin >> input;
+			clearInputBuffer();
+			if (input == '0')
+				break;
+			p.status = isFullPayment ? "Fully Paid" : "Deposit Paid";
+			p.cashCount++;
+			completed = true;
+			cout << "\nPayment successful! Thank you for your payment." << endl;
+			break;
+
+		case 2:
+			cout << "\nPayment Method: Online Banking" << endl;
+			cout << "Please transfer the amount to the following bank account: " << endl;
+			cout << "Bank: Maybank" << endl;
+			cout << "Account Number: 1234567890" << endl;
+			cout << "Account Name: ABC Company" << endl;
+			cout << "Please include your name and invoice number in the transfer reference." << endl;
+			cout << "\nPress any key after you have finished the payment or press '0' to return to Payment Menu" << endl;
+			cin >> input;
+			clearInputBuffer();
+			if (input == '0')
+				break;
+			p.status = isFullPayment ? "Fully Paid" : "Deposit Paid";
+			p.onlineBankingCount++;
+			completed = true;
+			cout << "\nPayment successful! Thank you for your payment.\n" << endl;
+			break;
+
+		case 3:
+			cout << "\nPayment Method: E-Wallet" << endl;
+			cout << "Please transfer the amount to the following e-wallet account: " << endl;
+			cout << "Account Number: 0123456789" << endl;
+			cout << "Account Name: ABC Company" << endl;
+			cout << "\nPress any key after you have finished the payment or press '0' to return to Payment Menu" << endl;
+			cin >> input;
+			clearInputBuffer();
+			if (input == '0')
+				break;
+			p.status = isFullPayment ? "Fully Paid" : "Deposit Paid";
+			p.eWalletCount++;
+			completed = true;
+			cout << "\nPayment successful! Thank you for your payment.\n" << endl;
+			break;
+
+		case 4:
+			cout << "\nPlease contact us if you need assistance." << endl;
+			cout << "Email: abc@gmail.com" << endl;
+			cout << "Phone: 012-3456789" << endl;
+			cout << "Press any key to continue..." << endl;
+			cin.get();
+			break;
+
+		default:
+			cout << "\nReturning to Payment Menu..." << endl;
+			break;
+		}
+	} while (choice != 0 && !completed);
+
+	if (completed) {
+		char invoiceChoice;
+		cout << "Press 1 to generate invoice or 0 to return to Payment Menu" << endl;
+		cin >> invoiceChoice;
+		clearInputBuffer();
+		if (invoiceChoice == '1') {
+			invoice(p);
+		}
+	}
+	return completed;
+}
+
+Payment processPayment(Payment p) {
+	int choice;
+
+	cout << "\n===== Payment =====\n";
+	cout << "Enter Customer ID: ";
+	cin >> p.customerID;
+	clearInputBuffer();
+
+	cout << "Customer Name: " << getCustomerName(p.customerID) << endl;
+
+	// Check whether this customer already has a payment record, and what
+	// its current status is, BEFORE starting a new payment flow.
+	int existingIndex = findPaymentIndex(p.customerID);
+	if (existingIndex != -1) {
+		p = payments[existingIndex];
+
+		if (p.status == "Fully Paid") {
+			cout << "\nThis booking has already been fully paid. You have no payment due." << endl;
+			return p;
+		}
+	}
+
+	// Look up the amount from the booking, and print the service
+	double amount = showCustomerBooking(p.customerID);
+	if (amount == -1) {
+		cout << "No booking found for this Customer ID. Please create a booking first." << endl;
+		p.customerID = ""; // so paymentMenu/storeOrUpdatePayment don't save a blank record
+		return p;
+	}
+	p.totalAmount = amount;
+	cout << "Total Amount: RM" << fixed << setprecision(2) << p.totalAmount << endl;
+	cout << "Payment Status: " << p.status << endl;
+
+	bool completed = false;
+
+	if (p.status == "Deposit Paid") {
+		// Deposit already on file - what's left must be paid in full now.
+		p.balance = p.totalAmount - p.deposit;
+		cout << "\nA deposit has already been paid for this booking." << endl;
+		cout << "Remaining balance to pay: RM" << p.balance << endl;
+		completed = collectPaymentMethod(p, true);
+	}
+	else {
+		do {
+			cout << "Would you prefer to secure your booking with a deposit today, or take care of the full payment now?" << endl;
+			cout << "1. Pay Deposit (50% of total amount)" << endl;
+			cout << "2. Pay Full Amount" << endl;
+			cout << "0. Return to Payment Menu" << endl;
+			cout << "Enter your choice: ";
+			choice = getMenuChoice(1, 2);
+			switch (choice) {
+			case 1:
+				p.deposit = p.totalAmount * 0.50;
+				p.balance = p.totalAmount - p.deposit;
+				cout << "Deposit (50%): RM" << p.deposit << endl;
+				cout << "Remaining balance to be paid after service: RM" << p.balance << endl;
+				completed = collectPaymentMethod(p, false);
+				break;
+			case 2:
+				p.deposit = 0;
+				p.balance = 0;
+				completed = collectPaymentMethod(p, true);
+				break;
+			default:
+				cout << "Invalid choice. Please try again." << endl;
+			}
+		} while (choice != 0 && !completed);
+	}
+
+	// Only count revenue once a payment has actually gone through.
+	if (completed) {
+		p.totalEarn += p.totalAmount;
+	}
+
+	return p;
+}
+
+void displayPaymentDetails(Payment p) {
+	int choice;
+
+	cout << "\n===== Payment Details =====\n";
+	cout << "Enter Customer ID: ";
+	cin >> p.customerID;
+	clearInputBuffer();
+
+	int ids = findPaymentIndex(p.customerID);
+	if (ids == -1) {
+		cout << "No payment record found for that Customer ID." << endl;
+		return;
+	}
+	p = payments[ids];
+
+	cout << fixed << setprecision(2);
+	cout << "Customer ID: " << p.customerID << endl;
+	cout << "Customer Name: " << getCustomerName(p.customerID) << endl;
+
+	// Show the same service breakdown here too.
+	showCustomerBooking(p.customerID);
+
+	cout << "Total Amount: RM" << p.totalAmount << endl;
+	cout << "Deposit: RM" << p.deposit << endl;
+	cout << "Balance: RM" << p.balance << endl;
+	cout << "Status: " << p.status << endl;
+	do {
+		cout << "\n1. Generate Invoice" << endl;
+		cout << "2. Update Payment Status" << endl;
+		cout << "0. Return to Payment Menu" << endl;
+		cout << "Enter your choice: ";
+		choice = getMenuChoice(1, 2);
+		if (choice == 1) {
+			invoice(p);
+			break;
+		}
+		else if (choice == 2) {
+			p = updatePaymentStatus(p);
+			storeOrUpdatePayment(p);
+			break;
+		}
+		else if (choice == 0) {
+			cout << "\nReturning to Payment Menu..." << endl;
+			break;
+		}
+	} while (choice <= 0 || choice > 2);
+}
+
+void invoice(const Payment p) {
+	int choice;
+
+	cout << "\n";
+	cout << "========================================\n";
+	cout << "              PET GROOMING\n";
+	cout << "                 INVOICE\n";
+	cout << "========================================\n";
+
+	cout << fixed << setprecision(2);
+	cout << "Customer ID\t: " << p.customerID << endl;
+
+	// Only show customer + service details once money has actually
+	// changed hands - a Pending/Failed record has nothing to invoice yet.
+	if (p.status == "Deposit Paid" || p.status == "Fully Paid") {
+		cout << "Customer Name\t: " << getCustomerName(p.customerID) << endl;
+		cout << "----------------------------------------\n";
+		cout << "Service(s) Booked:\n";
+		showCustomerBooking(p.customerID);
+		cout << "----------------------------------------\n";
+	}
+
+	cout << "Total Amount\t: RM" << p.totalAmount << endl;
+	cout << "Deposit Paid (50%)\t: RM" << p.deposit << endl;
+	cout << "Balance\t\t: RM" << p.balance << endl;
+	cout << "Status\t\t: " << p.status << endl;
+
+	cout << "========================================\n";
+
+	cout << "\nChoose invoice option:\n";
+	cout << "1. Print Invoice\n";
+	cout << "2. Email E-Invoice\n";
+	cout << "0. Back\n";
+	cout << "Enter your choice: ";
+	choice = getMenuChoice(1, 2);
+
+	switch (choice) {
+	case 1:
+		cout << "\nPrinting invoice...\n";
+		cout << "Invoice printed successfully.\n";
+		break;
+
+	case 2:
+		cout << "\nE-Invoice selected.\n";
+		cout << "Sending invoice to email...\n";
+		cout << "E-Invoice sent successfully.\n";
+		break;
+
+	default:
+		cout << "\nReturning to main menu...\n";
+		break;
+	}
+}
+
+Payment updatePaymentStatus(Payment p) {
+	int choice;
+
+	cout << "\n===== Update Payment Status =====" << endl;
+
+	if (p.customerID.empty()) {
+		cout << "Enter Customer ID: ";
+		cin >> p.customerID;
+		clearInputBuffer();
+		int ids = findPaymentIndex(p.customerID);
+		if (ids == -1) {
+			cout << "No payment record found for that Customer ID." << endl;
+			return p;
+		}
+		p = payments[ids];
+	}
+
+	cout << "Current Status: " << p.status << endl;
+	cout << "\nSelect new payment status:" << endl;
+	cout << "1. Pending" << endl;
+	cout << "2. Deposit Paid" << endl;
+	cout << "3. Fully Paid" << endl;
+	cout << "4. Failed" << endl;
+	cout << "0. Back" << endl;
+	choice = getMenuChoice(1, 4);
+	switch (choice) {
+	case 1:
+		p.status = "Pending";
+		cout << "Payment status updated to Pending." << endl;
+		break;
+	case 2:
+		p.status = "Deposit Paid";
+		cout << "Payment status updated to Deposit Paid." << endl;
+		break; // FIX: was falling through into case 3 before
+	case 3:
+		p.status = "Fully Paid";
+		cout << "Payment status updated to Fully Paid." << endl;
+		break;
+	case 4:
+		p.status = "Failed";
+		cout << "Payment status updated to Failed." << endl;
+		break;
+	}
+	return p;
+}
+
+void paymentHistory() {
+	cout << "\n===== Payment History =====\n";
+	if (isEmptyPayments())
+		return;
+
+	cout << fixed << setprecision(2);
+	cout << left << setw(15) << "Customer ID" << setw(12) << "Total"
+		<< setw(12) << "Deposit" << setw(12) << "Balance"
+		<< setw(15) << "Status" << endl;
+
+	for (int i = 0; i < paymentCount; i++) {
+		cout << left << setw(15) << payments[i].customerID
+			<< setw(12) << payments[i].totalAmount
+			<< setw(12) << payments[i].deposit
+			<< setw(12) << payments[i].balance
+			<< setw(15) << payments[i].status << endl;
+	}
+}
+
+void searchPayment() {
+	cout << "\n==== Search Payment ====\n";
+	if (isEmptyPayments())
+		return;
+
+	string id;
+	cout << "Enter Customer ID to search: ";
+	cin >> id;
+	clearInputBuffer();
+
+	int ids = findPaymentIndex(id);
+	if (ids == -1) {
+		cout << "No payment record found for that Customer ID." << endl;
+		return;
+	}
+
+	cout << fixed << setprecision(2);
+	cout << "\nCustomer ID : " << payments[ids].customerID << endl;
+
+	// Only show customer + service details once money has actually
+	// changed hands (Deposit Paid or Fully Paid).
+	if (payments[ids].status == "Deposit Paid" || payments[ids].status == "Fully Paid") {
+		cout << "Customer Name: " << getCustomerName(payments[ids].customerID) << endl;
+		cout << "\nService(s) Booked:\n";
+		showCustomerBooking(payments[ids].customerID);
+	}
+
+	cout << "\nTotal Amount: RM" << payments[ids].totalAmount << endl;
+	cout << "Deposit     : RM" << payments[ids].deposit << endl;
+	cout << "Balance     : RM" << payments[ids].balance << endl;
+	cout << "Status      : " << payments[ids].status << endl;
+}
+
+// ---- payments array helpers ----
+
+bool isEmptyPayments() {
+	if (paymentCount == 0) {
+		cout << "No payment records available." << endl;
+		return true;
+	}
+	return false;
+}
+
+int findPaymentIndex(string id) {
+	for (int i = 0; i < paymentCount; i++) {
+		if (payments[i].customerID == id) return i;
+	}
+	return -1; // not found
+}
+
+void savePaymentsToFile() {
+	ofstream file("payments.txt");
+	if (!file.is_open()) {
+		cout << "Error: Could not open payments file for writing." << endl;
+		return;
+	}
+	for (int i = 0; i < paymentCount; i++) {
+		file << payments[i].customerID << endl;
+		file << payments[i].totalAmount << endl;
+		file << payments[i].deposit << endl;
+		file << payments[i].balance << endl;
+		file << payments[i].status << endl;
+	}
+	file.close();
+}
+
+void loadPaymentsFromFile() {
+	ifstream file("payments.txt");
+	if (!file.is_open())
+		return;
+
+	paymentCount = 0;
+	string id, status;
+	double amount, deposit, balance;
+
+	while (paymentCount < MAX_PAYMENTS && getline(file, id)) {
+		if (id.empty())
+			continue;
+
+		file >> amount >> deposit >> balance;
+		file.ignore(); // clear leftover newline before the next getline()
+		getline(file, status);
+
+		payments[paymentCount].customerID = id;
+		payments[paymentCount].totalAmount = amount;
+		payments[paymentCount].deposit = deposit;
+		payments[paymentCount].balance = balance;
+		payments[paymentCount].status = status;
+		paymentCount++;
+	}
+	file.close();
+}
+
+// Adds a new payment record, or overwrites the existing one for that
+// customerID if they already have a record. Then saves to file.
+void storeOrUpdatePayment(Payment p) {
+	int ids = findPaymentIndex(p.customerID);
+	if (ids != -1) {
+		payments[ids] = p;
+	}
+	else if (paymentCount < MAX_PAYMENTS) {
+		payments[paymentCount] = p;
+		paymentCount++;
+	}
+	else {
+		cout << "Error: Payment record limit reached." << endl;
+		return;
+	}
+	savePaymentsToFile();
+}
+// ---- lookup helpers: read other modules' .txt files directly ----
+
+string getCustomerName(string id) {
+	ifstream file("customers.txt");
+	if (!file.is_open()) return "";
+
+	string fileID, name, phone, petName, petType;
+	while (getline(file, fileID)) {
+		getline(file, name);
+		getline(file, phone);
+		getline(file, petName);
+		getline(file, petType);
+
+		if (fileID == id) {
+			file.close();
+			return name;
+		}
+	}
+	file.close();
+	return "";
+}
+
+void getServiceInfoByPosition(int position, string& nameOut, double& priceOut) {
+	nameOut = "";
+	priceOut = -1;
+
+	ifstream file("data.txt");
+	if (!file.is_open()) return;
+
+	string id, name, description;
+	double price;
+	int i = 0;
+
+	while (getline(file, id)) {
+		getline(file, name);
+		file >> price;
+		file.ignore(); // eat trailing newline before next getline()
+		getline(file, description);
+
+		if (i == position) {
+			nameOut = name;
+			priceOut = price;
+			file.close();
+			return;
+		}
+		i++;
+	}
+	file.close();
+}
+
+double showCustomerBooking(string id) {
+	ifstream file("bookings.txt");
+	if (!file.is_open())
+		return -1;
+
+	string fileID;
+	while (getline(file, fileID)) {
+		float times[14];
+		for (int i = 0; i < 14; i++)
+			file >> times[i];
+
+		int totalBooking, totalCompleted;
+		double totalAmount;
+		file >> totalBooking >> totalCompleted >> totalAmount;
+		file.ignore(); // eat trailing newline before next getline()
+
+		if (fileID == id) {
+			file.close();
+			cout << fixed << setprecision(2);
+			for (int i = 0; i < 14; i++) {
+				if (times[i] != 0) {
+					string sName;
+					double price;
+					getServiceInfoByPosition(i / 2, sName, price);
+
+					cout << sName << " - Booking Time: " << times[i];
+					if (price != -1) {
+						cout << " - RM" << price;
+					}
+					else {
+						cout << " - (price not found)";
+					}
+					cout << endl;
+				}
+			}
+			return totalAmount;
+		}
+	}
+	file.close();
+	return -1;
+}
+
+
+// ZI QUAN PART (Report Module)
+void reportMenu() {
+	/*int choice;
+	do {
+		cout << "=========================================" << endl;
+		cout << "               Report Page     " << endl;
+		cout << "=========================================" << endl;
+		cout << "1. Summary\n" << "2. Detailed Report\n" << "3. Analysis" << endl;
+		choice = getMenuChoice(1,3);
+		switch (choice) {
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+		case 3:
+
+			break;
+		}
+	} while (choice != 0); */
 }
