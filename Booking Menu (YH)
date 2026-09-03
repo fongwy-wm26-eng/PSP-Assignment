@@ -16,6 +16,7 @@ struct Booking {
 	char determine = '0';
 	int totalBooking = 0;
 	int totalCompleted = 0;
+	int totalCancel = 0;
 	double totalAmount = 0.0;
 };
 
@@ -122,6 +123,7 @@ void saveBooking(Booking b) {
 
 	file << b.totalBooking << endl;
 	file << b.totalCompleted << endl;
+	file << b.totalCancel << endl;
 	file << b.totalAmount << endl;
 
 	file.close();
@@ -155,6 +157,7 @@ void updateBooking(Booking b) {
 
 		oldFile >> temp.totalBooking;
 		oldFile >> temp.totalCompleted;
+		oldFile >> temp.totalCancel;
 		oldFile >> temp.totalAmount;
 
 		oldFile.ignore();
@@ -172,6 +175,7 @@ void updateBooking(Booking b) {
 
 		newFile << temp.totalBooking << endl;
 		newFile << temp.totalCompleted << endl;
+		newFile << temp.totalCancel << endl;
 		newFile << temp.totalAmount << endl;
 	}
 
@@ -205,9 +209,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[0] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[1] != 0) { //subtract two time for booking two time case
 						b.times[1] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -232,9 +238,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[2] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[3] != 0) {
 						b.times[3] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -259,9 +267,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[4] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[5] != 0) {
 						b.times[5] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -286,9 +296,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[6] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[7] != 0) {
 						b.times[7] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -313,9 +325,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[8] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[9] != 0) {
 						b.times[9] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -341,9 +355,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[10] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[11] != 0) {
 						b.times[11] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -368,9 +384,11 @@ void cancel(Booking& b) {		//to change all of the value
 				if (b.determine == '1') {
 					b.times[12] = 0;
 					b.totalBooking--;
+					b.totalCancel++;
 					if (b.times[13] != 0) {
 						b.times[13] = 0;
 						b.totalBooking--;
+						b.totalCancel++;
 					}
 					calculateTotal(b);
 					updateBooking(b);
@@ -410,6 +428,7 @@ bool findBooking(string customerID, Booking& b) {
 
 		file >> b.totalBooking;
 		file >> b.totalCompleted;
+		file >> b.totalCancel;
 		file >> b.totalAmount;
 
 		file.ignore();
