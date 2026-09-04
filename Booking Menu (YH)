@@ -614,7 +614,7 @@ void booking(Booking& b) {
 	if (findBooking(b.customerID, oldBooking)) {		//get old data when it's not the first time of customer booking
 		b = oldBooking;
 	}
-	cout << "Please enter customer id before proceed :";
+	cout << "Please enter customer id before proceed (enter an existing id will modify booking) :";
 	cin >> b.customerID;
 
 	while (true) {
