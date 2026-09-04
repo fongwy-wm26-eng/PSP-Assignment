@@ -1,6 +1,7 @@
 // YEW HONG PART (Booking Management)
 void bookingMenu();
 void booking(Booking& b);
+void modify(Booking b);
 void review(string customerID);
 void grandTotal();
 void cancel(Booking& b);
@@ -38,7 +39,7 @@ void bookingMenu() {
 		cout << "==========================================" << endl;
 		cout << "            Booking Management     " << endl;
 		cout << "==========================================" << endl;
-		cout << "1. Add Booking Time\n2. Review Booking\n3. View Total Booking\n4. Cancel booking\n0. Return\n";
+		cout << "1. Add Booking Time\n2. Modify Booking\n3. Review Booking\n4. View Total Booking\n5. Cancel booking\n0. Return\n";
 
 		choice = getMenuChoice(1, 4);
 		switch (choice) {
@@ -46,12 +47,15 @@ void bookingMenu() {
 			booking(b);
 			break;
 		case 2:
-			review(b.customerID);
+			modify(b);
 			break;
 		case 3:
-			grandTotal();
+			review(b.customerID);
 			break;
 		case 4:
+			grandTotal();
+			break;
+		case 5:
 			cancel(b);
 			break;
 		}
@@ -608,13 +612,7 @@ void grandTotal() {
 }
 
 void booking(Booking& b) {
-
-	Booking oldBooking;
-
-	if (findBooking(b.customerID, oldBooking)) {		//get old data when it's not the first time of customer booking
-		b = oldBooking;
-	}
-	cout << "Please enter customer id before proceed (enter an existing id will modify booking) :";
+	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
 
 	while (true) {
@@ -634,14 +632,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {		//save to original page if found same customer if
-					updateBooking(b);
-				}
-				else {												//save to other page otherwise
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -655,14 +646,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[0] == b.times[1]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -677,14 +661,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -698,14 +675,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[2] == b.times[3]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -719,14 +689,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -740,14 +703,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[4] == b.times[5]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -761,14 +717,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -782,14 +731,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[6] == b.times[7]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -803,14 +745,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -824,14 +759,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[8] == b.times[9]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -845,14 +773,7 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -866,14 +787,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[10] == b.times[11]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -887,14 +801,8 @@ void booking(Booking& b) {
 			cin >> b.determine;
 			if (b.determine == '1') {
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
+				
 				cout << "Thank you for your filling." << endl;
 				return;
 			}
@@ -908,14 +816,7 @@ void booking(Booking& b) {
 					}
 				} while (b.times[12] == b.times[13]);
 				calculateTotal(b);
-				Booking oldBooking;
-
-				if (findBooking(b.customerID, oldBooking)) {
-					updateBooking(b);
-				}
-				else {
-					saveBooking(b);
-				}
+				saveBooking(b);
 				cout << "The time slot was all filled, thank you." << endl;
 				return;
 			}
@@ -929,5 +830,185 @@ void booking(Booking& b) {
 			cout << "Invalid, please try again." << endl;
 		}
 	}
+}
 
+void modify(Booking b) {
+	cout << "Please enter customer id before proceed :";
+	cin >> b.customerID;
+
+
+	if (!findBooking(b.customerID, b)) {
+		cout << "No booking history found for this customer.\n";
+		return;
+	}
+
+	int service;
+
+	cout << "Current available pet grooming service :\n";
+	cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
+	cout << "5.Ear Cleaning\n6.Full Grooming\n7.Flea Treatment\n8.Return" << endl;
+	cout << "Please enter the number of service customer want to modify :";
+	cin >> service;
+
+
+	if (service == 1) {
+
+		if (b.times[0] != 0) {
+
+			cout << "Original booking time: " << b.times[0] << endl;
+			b.times[0] = getValidTime();
+
+			if (b.times[1] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[1] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 2) {
+
+		if (b.times[2] != 0) {
+
+			cout << "Original booking time: " << b.times[2] << endl;
+			b.times[2] = getValidTime();
+
+			if (b.times[3] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[3] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 3) {
+
+		if (b.times[4] != 0) {
+
+			cout << "Original booking time: " << b.times[4] << endl;
+			b.times[4] = getValidTime();
+
+			if (b.times[5] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[5] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 4) {
+
+		if (b.times[6] != 0) {
+
+			cout << "Original booking time: " << b.times[6] << endl;
+			b.times[6] = getValidTime();
+
+			if (b.times[7] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[7] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 5) {
+
+		if (b.times[8] != 0) {
+
+			cout << "Original booking time: " << b.times[8] << endl;
+			b.times[8] = getValidTime();
+
+			if (b.times[9] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[9] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 6) {
+
+		if (b.times[10] != 0) {
+
+			cout << "Original booking time: " << b.times[10] << endl;
+			b.times[10] = getValidTime();
+
+			if (b.times[11] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[11] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 7) {
+
+		if (b.times[12] != 0) {
+
+			cout << "Original booking time: " << b.times[12] << endl;
+			b.times[12] = getValidTime();
+
+			if (b.times[13] != 0) {
+				cout << "2nd booking time: " << b.times[1] << endl;
+				b.times[13] = getValidTime();
+			}
+
+			calculateTotal(b);
+			updateBooking(b);
+
+		}
+		else {
+			cout << "No booking found for this service.\n";
+		}
+
+	}
+
+	else if (service == 8) {
+		return;
+	}
+
+	else {
+		cout << "Invalid number, please try again.\n";
+	}
 }
