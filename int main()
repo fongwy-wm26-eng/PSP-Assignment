@@ -1298,9 +1298,9 @@ void updateService() {
 
 						services[i].price = services[serviceCount].price;
 
-						saveService();
-
 						cout << endl << "\nService added successfully!" << endl;
+
+						saveService();
 
 
 					}
