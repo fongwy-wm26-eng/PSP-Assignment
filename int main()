@@ -2499,7 +2499,7 @@ void addService()
 
 	while (true) {
 		cout << "\n" << "1.Add another service" << endl;
-		cout << "2.Return to main menu" << endl;
+		cout << "2.Return to menu" << endl;
 		cout << "0. Exit" << endl;
 		cout << "Select the number of Service: ";
 		cout << endl;
@@ -2691,7 +2691,7 @@ void updateService() {
 				cout << "2.Update New Service Name" << endl;
 				cout << "3.Update New Service Price" << endl;
 				cout << "4.Update New Service Description" << endl;
-				cout << "5.Return to main menu" << endl;
+				cout << "5.Return to menu" << endl;
 				cout << "0. Exit" << endl;
 
 				bool servicechoice = true;
@@ -2792,7 +2792,7 @@ void updateService() {
 		}
 		while (true) {
 			cout << endl << "1.Update another service" << endl;
-			cout << "2.Return to main menu" << endl;
+			cout << "2.Return to menu" << endl;
 			cout << "0. Exit" << endl;
 			cout << "Select the number of Service: ";
 
@@ -2956,7 +2956,7 @@ void displayServices() {
 
 
 	while (true) {
-		cout << endl << "1.Return to main menu" << endl;
+		cout << endl << "1.Return to menu" << endl;
 		cout << "0. Exit" << "\n" << endl;
 		cout << "Select the number of Service: ";
 
@@ -2975,9 +2975,7 @@ void displayServices() {
 
 		switch (displayNumber) {
 		case '1':
-			cout << endl;
-			petgroomingSystem();
-			break;
+			return;
 		case '0':
 			cout << "Exiting the program..." << endl;
 			exit(0);
