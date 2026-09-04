@@ -615,6 +615,12 @@ void booking(Booking& b) {
 	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
 
+ if (findBooking(b.customerID, existingBooking)) {					//checking whether previous record exist
+        cout << "This customer already has a booking." << endl;		
+        cout << "Please use Modify Booking to change the existing booking.\n";
+        return;
+    }
+
 	while (true) {
 		int service;
 		cout << "Current available pet grooming service :\n";
@@ -835,7 +841,6 @@ void booking(Booking& b) {
 void modify(Booking b) {
 	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
-
 
 	if (!findBooking(b.customerID, b)) {
 		cout << "No booking history found for this customer.\n";
