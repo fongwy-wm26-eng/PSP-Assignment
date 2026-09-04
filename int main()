@@ -1,15 +1,9 @@
 
 // STILL MISSING, all compulsory, remember to add these
-// 1. arrays. u have NO array at all in this file. not 1D, not 2D.
-//    both are compulsory and the system must hold at least 50
-//    records. right now everything go straight into the file.
 // 2. sorting. bubble sort or selection sort, at least one.
 
 
 // DO THESE FIRST BEFORE THE NEXT CHECK
-// 1. fix the infinite loop at the bottom of processPayment
-// 2. fix the totalAmount that nobody ever key in
-// 4. delete the 3 extra ignore() calls, i marked all 3
 // 7. zi quan start the report module and the sorting
 
 #include <iostream>
