@@ -358,7 +358,7 @@ void clearInputBuffer() {
 }
 
 //========================================== SUB MENU (CODE) =========================================//
-	
+
 // KHAI SIANG PART (Record Management)
 void recordMenu() {
 	int choiceRMM;
@@ -2450,98 +2450,98 @@ void addService()
 {
 	string input;
 
-	while(true){
-	cout << "==============================" << endl;
-	cout << "        Add New Service       " << endl;
-	cout << "==============================" << endl;
-
-	if (serviceCount >= 100)
-	{
-		cout << "Service list is full!" << endl;
-		return;
-	}
-
-	validaddservice();
-
-	if (services[serviceCount].serviceID == "1")
-		return;
-
-	do {
-
-		cout << "Enter Service Name: ";
-		getline(cin, services[serviceCount].serviceName);
-
-		if (services[serviceCount].serviceName == "") {
-			cout << "Service Name cannot be empty. Please try again." << endl;
-
-		}
-	} while (services[serviceCount].serviceName == "");
-
-	do {
-
-		cout << "Enter Description: ";
-		getline(cin, services[serviceCount].description);
-
-		if (services[serviceCount].description == "") {
-			cout << "Description cannot be empty. Please try again." << endl;
-		}
-	} while (services[serviceCount].description == "");
-
-
-	addprice();
-
-	serviceCount++;
-
-	saveService();
-
-	cout << endl << "\nService added successfully!" << endl;
-
-
 	while (true) {
-		cout << "\n" << "1.Add another service" << endl;
-		cout << "2.Return to main menu" << endl;
-		cout << "0. Exit" << endl;
-		cout << "Select the number of Service: ";
-		cout << endl;
+		cout << "==============================" << endl;
+		cout << "        Add New Service       " << endl;
+		cout << "==============================" << endl;
 
-		getline(cin, input);
-		if (input.empty()) {
-			cout << "Invalid choice. Please try again." << endl << endl;
-			continue;
-		}
-		if (input.length() != 1) {
-			cout << "Invalid choice. Please try again." << endl << endl;
-			continue;
-		}
-
-		returnNumber = input[0];
-
-
-		if (!isdigit(returnNumber)) {
-
-			cout << endl << "Invalid choice. Please try again." << endl;
-
-			continue;
-		}
-
-		if (returnNumber == '1') {
-			cout << endl;
-			typeService();
-			cout << endl;
-			break;
-		}
-		else if (returnNumber == '2') {
-			cout << endl;
+		if (serviceCount >= 100)
+		{
+			cout << "Service list is full!" << endl;
 			return;
 		}
-		else if (returnNumber == '0') {
-			cout << "Exiting the program..." << endl;
-			exit(0);
+
+		validaddservice();
+
+		if (services[serviceCount].serviceID == "1")
+			return;
+
+		do {
+
+			cout << "Enter Service Name: ";
+			getline(cin, services[serviceCount].serviceName);
+
+			if (services[serviceCount].serviceName == "") {
+				cout << "Service Name cannot be empty. Please try again." << endl;
+
+			}
+		} while (services[serviceCount].serviceName == "");
+
+		do {
+
+			cout << "Enter Description: ";
+			getline(cin, services[serviceCount].description);
+
+			if (services[serviceCount].description == "") {
+				cout << "Description cannot be empty. Please try again." << endl;
+			}
+		} while (services[serviceCount].description == "");
+
+
+		addprice();
+
+		serviceCount++;
+
+		saveService();
+
+		cout << endl << "\nService added successfully!" << endl;
+
+
+		while (true) {
+			cout << "\n" << "1.Add another service" << endl;
+			cout << "2.Return to main menu" << endl;
+			cout << "0. Exit" << endl;
+			cout << "Select the number of Service: ";
+			cout << endl;
+
+			getline(cin, input);
+			if (input.empty()) {
+				cout << "Invalid choice. Please try again." << endl << endl;
+				continue;
+			}
+			if (input.length() != 1) {
+				cout << "Invalid choice. Please try again." << endl << endl;
+				continue;
+			}
+
+			returnNumber = input[0];
+
+
+			if (!isdigit(returnNumber)) {
+
+				cout << endl << "Invalid choice. Please try again." << endl;
+
+				continue;
+			}
+
+			if (returnNumber == '1') {
+				cout << endl;
+				typeService();
+				cout << endl;
+				break;
+			}
+			else if (returnNumber == '2') {
+				cout << endl;
+				return;
+			}
+			else if (returnNumber == '0') {
+				cout << "Exiting the program..." << endl;
+				exit(0);
+			}
+			else {
+				cout << endl << "Invalid choice. Please try again." << endl;
+			}
 		}
-		else {
-			cout << endl << "Invalid choice. Please try again." << endl;
-		}
-	}
 
 
 	}
@@ -2923,7 +2923,7 @@ void searchService() {
 			cout << "Invalid choice. Please try again." << endl;
 			cin.ignore();
 		}
-		
+
 
 	}
 }
@@ -3083,7 +3083,6 @@ void deleteService() {
 							break;
 						default:
 							cout << endl << "Invalid choice. Please try again." << endl;
-							cin.ignore();
 						}
 					} while (confirmation != 'Y' && confirmation != 'y' && confirmation != 'N' && confirmation != 'n');
 
@@ -3099,9 +3098,9 @@ void deleteService() {
 		} while (!found);
 
 		bool askingAgain = true;
-		while (askingAgain)	{
+		while (askingAgain) {
 			cout << endl << "1.Delete another service" << endl;
-			cout << "2.Return to main menu" << endl;
+			cout << "2.Return to Menu" << endl;
 			cout << "0. Exit" << "\n" << endl;
 			cout << "Select the number of Service: ";
 
