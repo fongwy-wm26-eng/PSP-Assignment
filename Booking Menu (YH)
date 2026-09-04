@@ -41,7 +41,7 @@ void bookingMenu() {
 		cout << "==========================================" << endl;
 		cout << "1. Add Booking Time\n2. Modify Booking\n3. Review Booking\n4. View Total Booking\n5. Cancel booking\n0. Return\n";
 
-		choice = getMenuChoice(1, 4);
+		choice = getMenuChoice(1, 5);
 		switch (choice) {
 		case 1:
 			booking(b);
