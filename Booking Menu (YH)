@@ -2,7 +2,9 @@
 void bookingMenu();
 void booking(Booking& b);
 void review(string customerID);
+void grandTotal();
 void cancel(Booking& b);
+float getValidTime();
 double getServicePrice(int serviceNumber);
 void calculateTotal(Booking& b);
 void saveBooking(Booking b);
@@ -36,9 +38,9 @@ void bookingMenu() {
 		cout << "==========================================" << endl;
 		cout << "            Booking Management     " << endl;
 		cout << "==========================================" << endl;
-		cout << "1. Add Booking Time\n2. Review Booking\n3. Cancel booking\n0. Return\n";
+		cout << "1. Add Booking Time\n2. Review Booking\n3. View Total Booking\n4. Cancel booking\n0. Return\n";
 
-		choice = getMenuChoice(1, 3);
+		choice = getMenuChoice(1, 4);
 		switch (choice) {
 		case 1:
 			booking(b);
@@ -47,11 +49,40 @@ void bookingMenu() {
 			review(b.customerID);
 			break;
 		case 3:
+			grandTotal();
+			break;
+		case 4:
 			cancel(b);
 			break;
 		}
 
 	} while (choice != 0);
+}
+
+float getValidTime() {
+	float time;
+
+	while (true) {
+		cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
+		cin >> time;
+
+		if (cin.fail()) {										//for input such as abc while facing float
+			clearInputBuffer();
+			cout << "Invalid input. Please enter a valid time.\n";
+		}
+		else {
+			int hour = (int)time;								//example : 23.45 (float) -> 23 (int)(hour)
+ 			int minute = (int)((time - hour) * 100);			//example : (23.45 - 23) * 100 = 45 (int)(minutes)
+
+			if (hour >= 0 && hour <= 23 &&
+				minute >= 0 && minute <= 59) {
+				return time;
+			}
+			else {
+				cout << "Invalid time. Please enter between 00.00 and 23.59.\n";
+			}
+		}
+	}
 }
 
 double getServicePrice(int serviceNumber) {
@@ -450,6 +481,7 @@ void review(string customerID) {		//list out booking history by customer id
 
 	cout << "\nHere is the booking history.\n";
 	cout << setfill('=') << setw(58) << "" << endl;
+	cout << fixed << setprecision(2);
 	cout << "Customer ID\t: " << b.customerID << endl;
 
 	if (b.times[0] != 0) {
@@ -501,11 +533,78 @@ void review(string customerID) {		//list out booking history by customer id
 		cout << "Flea Treatment\t: " << b.times[13] << endl;
 	}
 
-	cout << fixed << setprecision(2);
-	cout << "Total Booking\t: " << b.totalBooking << endl;
+	cout << "Total Booking\t: " << b.totalBooking << endl;			//total booking is int so won't affect
 	cout << "Total Amount\t: RM " << b.totalAmount << endl;
 	cout << setfill('=') << setw(58) << "" << endl;
 	return;
+}
+
+void grandTotal() {
+	ifstream file("bookings.txt");
+
+	if (!file.is_open()) {
+		cout << "Unable to open booking file." << endl;
+		return;
+	}
+
+	string customerID;
+	float times[14];
+	int totalService[7] = { 0 };
+	int grandTotal = 0;
+
+	while (getline(file, customerID)) {
+
+		for (int i = 0; i < 14; i++) {
+			file >> times[i];
+		}
+
+		int totalBooking;
+		int totalCancel;
+		double totalAmount;
+
+		file >> totalBooking;
+		file >> totalCancel;
+		file >> totalAmount;
+
+		file.ignore();					//not going to count in these
+
+		for (int i = 0; i < 7; i++) {
+
+			if (times[i * 2] != 0) {
+				totalService[i]++;
+				grandTotal++;
+			}
+
+			if (times[i * 2 + 1] != 0) {			//each service two time slot, so determine both of it
+				totalService[i]++;
+				grandTotal++;
+			}
+		}
+	}
+
+	file.close();
+
+	string serviceName[7] = {
+		"Basic Bath",			//service name [0] to [6]
+		"Hair Trimming",
+		"Nail Clipping",
+		"Teeth Cleaning",
+		"Ear Cleaning",
+		"Full Grooming",
+		"Flea Treatment"
+	};
+
+	cout << "==========================================" << endl;
+	cout << "       ALL CUSTOMER SERVICE TOTAL        " << endl;
+	cout << "==========================================" << endl;
+
+	for (int i = 0; i < 7; i++) {
+		cout << serviceName[i] << "\t: " << totalService[i] << endl;			//display all respective service and booking
+	}																			//situation
+
+	cout << "==========================================" << endl;
+	cout << "Grand Total\t: " << grandTotal << endl;
+	cout << "==========================================" << endl;
 }
 
 void booking(Booking& b) {
@@ -517,6 +616,7 @@ void booking(Booking& b) {
 	}
 	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
+
 	while (true) {
 		int service;
 		cout << "Current available pet grooming service :\n";
@@ -527,9 +627,8 @@ void booking(Booking& b) {
 
 		//save the booking time in specific time slot base on user selected service
 		if (service == 1) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[0];
-			b.totalBooking++; //count in the booking done
+			b.times[0] = getValidTime();
+			b.totalBooking++;										//count in the booking done
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
 			cin >> b.determine;
@@ -548,12 +647,11 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[1];
+					b.times[1] = getValidTime();
 					b.totalBooking++;
 					if (b.times[0] == b.times[1]) {
 						cout << "The booking time crashed, please try again." << endl;
-						b.totalBooking--; //subtract incorrect booking amount due to error
+						b.totalBooking--;						  //subtract incorrect booking amount due to error
 					}
 				} while (b.times[0] == b.times[1]);
 				calculateTotal(b);
@@ -572,8 +670,7 @@ void booking(Booking& b) {
 
 
 		else if (service == 2) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[2];
+			b.times[2] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -593,8 +690,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[3];
+					b.times[3] = getValidTime();
 					b.totalBooking++;
 					if (b.times[2] == b.times[3]) {
 						cout << "The booking time crashed, please try again." << endl;
@@ -616,8 +712,7 @@ void booking(Booking& b) {
 		}
 
 		else if (service == 3) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[4];
+			b.times[4] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -637,8 +732,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[5];
+					b.times[5] = getValidTime();
 					b.totalBooking++;
 					if (b.times[4] == b.times[5]) {
 						cout << "The booking time crashed, please try again." << endl;
@@ -660,8 +754,7 @@ void booking(Booking& b) {
 		}
 
 		else if (service == 4) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[6];
+			b.times[6] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -681,8 +774,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[7];
+					b.times[7] = getValidTime();
 					b.totalBooking++;
 					if (b.times[6] == b.times[7]) {
 						cout << "The booking time crashed, please try again." << endl;
@@ -704,8 +796,7 @@ void booking(Booking& b) {
 		}
 
 		else if (service == 5) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[8];
+			b.times[8] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -725,8 +816,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[9];
+					b.times[9] = getValidTime();
 					b.totalBooking++;
 					if (b.times[8] == b.times[9]) {
 						cout << "The booking time crashed, please try again." << endl;
@@ -748,8 +838,7 @@ void booking(Booking& b) {
 		}
 
 		else if (service == 6) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[10];
+			b.times[10] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -769,8 +858,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[11];
+					b.times[11] = getValidTime();
 					b.totalBooking++;
 					if (b.times[10] == b.times[11]) {
 						cout << "The booking time crashed, please try again." << endl;
@@ -792,8 +880,7 @@ void booking(Booking& b) {
 		}
 
 		else if (service == 7) {
-			cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-			cin >> b.times[12];
+			b.times[12] = getValidTime();
 			b.totalBooking++;
 			cout << "\nWould customer like to continue booking other times?" << endl;
 			cout << "Press 1 to cancel, any other key to continue :";
@@ -813,8 +900,7 @@ void booking(Booking& b) {
 			}
 			else {
 				do {
-					cout << "\nPlease enter the booking time in 24-hour clock (e.g. 15.00) :";
-					cin >> b.times[13];
+					b.times[13] = getValidTime();
 					b.totalBooking++;
 					if (b.times[12] == b.times[13]) {
 						cout << "The booking time crashed, please try again." << endl;
