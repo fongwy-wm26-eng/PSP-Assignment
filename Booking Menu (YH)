@@ -50,7 +50,7 @@ void bookingMenu() {
 			modify(b);
 			break;
 		case 3:
-			review(b.customerID);
+			review();
 			break;
 		case 4:
 			grandTotal();
@@ -223,6 +223,11 @@ void cancel(Booking& b) {		//to change all of the value
 	int cancel;
 	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
+
+	if (!findBooking(b.customerID, b)) {
+    	cout << "No booking history found for this customer.\n";
+	    return;
+	}
 	while (true) {
 		cout << "What service booking history customer wants to cancel of?\n";
 		cout << "1.Basic Bath\n2.Hair Trimming\n3.Nail Clipping\n4.Teeth Cleaning\n";
@@ -474,11 +479,11 @@ bool findBooking(string customerID, Booking& b) {
 	return false;
 }
 
-void review(string customerID) {		//list out booking history by customer id
+void review() {		//list out booking history by customer id
 	Booking b;
 	cout << "Please enter customer id before proceed :";
 	cin >> b.customerID;
-	if (!findBooking(customerID, b)) {
+	if (!findBooking(b.customerID, b)) {
 		cout << "No booking history found for this customer.\n";
 		return;
 	}
@@ -885,7 +890,7 @@ void modify(Booking b) {
 			b.times[2] = getValidTime();
 
 			if (b.times[3] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[3] << endl;
 				b.times[3] = getValidTime();
 			}
 
@@ -907,7 +912,7 @@ void modify(Booking b) {
 			b.times[4] = getValidTime();
 
 			if (b.times[5] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[5] << endl;
 				b.times[5] = getValidTime();
 			}
 
@@ -929,7 +934,7 @@ void modify(Booking b) {
 			b.times[6] = getValidTime();
 
 			if (b.times[7] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[7] << endl;
 				b.times[7] = getValidTime();
 			}
 
@@ -951,7 +956,7 @@ void modify(Booking b) {
 			b.times[8] = getValidTime();
 
 			if (b.times[9] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[9] << endl;
 				b.times[9] = getValidTime();
 			}
 
@@ -973,7 +978,7 @@ void modify(Booking b) {
 			b.times[10] = getValidTime();
 
 			if (b.times[11] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[11] << endl;
 				b.times[11] = getValidTime();
 			}
 
@@ -995,7 +1000,7 @@ void modify(Booking b) {
 			b.times[12] = getValidTime();
 
 			if (b.times[13] != 0) {
-				cout << "2nd booking time: " << b.times[1] << endl;
+				cout << "2nd booking time: " << b.times[13] << endl;
 				b.times[13] = getValidTime();
 			}
 
