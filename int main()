@@ -777,9 +777,6 @@ void serviceMenu() {
 			cout << "Return to Main Menu" << endl;
 			return;
 		}
-		else if (choice < '0' || choice > '5') {
-			cout << endl << "Invalid choice. Please enter a valid option." << endl;
-		}
 		else {
 			cout << endl << "Invalid choice. Please enter a valid option." << endl;
 		}
