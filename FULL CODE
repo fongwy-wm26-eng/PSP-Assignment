@@ -179,6 +179,7 @@ void saveCounter();
 double calculateRevenue();
 void saveHistorical();
 void sortServiceTimes();
+void loadHistorical();
 
 //====================================== Data Loading Section =======================================//
 // Load Customer Data
@@ -284,12 +285,6 @@ int main() {
 		load_service();
 	}	
 
-	ifstream historical("historical.txt");
-	if (historical.is_open()) {
-		historical >> historicalBooking;
-		historical >> totalRevenue;
-		historical.close();
-	}
 	int choice;
 	do {
 		mainMenu();
@@ -3789,4 +3784,13 @@ void sortServiceTimes() {
 		}
 	}
 
+}
+
+void loadHistorical() {
+	ifstream historical("historical.txt");
+	if (historical.is_open()) {
+		historical >> historicalBooking;
+		historical >> totalRevenue;
+		historical.close();
+	}
 }
