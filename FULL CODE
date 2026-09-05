@@ -3721,14 +3721,42 @@ void sortService() {
 void analysis() {
 	system("cls");
 	sortServiceTimes();
+
+	int totalCash = 0;
+	int totalOnlineBanking = 0;
+	int totalEWallet = 0;
+
+	for (int i = 0; i < paymentCount; i++) {
+		totalCash += payments[i].cashCount;
+		totalOnlineBanking += payments[i].onlineBankingCount;
+		totalEWallet += payments[i].eWalletCount;
+	}
+
+	// find the most popular payment method
+	string popularMethod = "None";
+	int maxCount = 0;
+
+	if (totalCash > maxCount) {
+		maxCount = totalCash;
+		popularMethod = "Cash";
+	}
+	if (totalOnlineBanking > maxCount) {
+		maxCount = totalOnlineBanking;
+		popularMethod = "Online Banking";
+	}
+	if (totalEWallet > maxCount) {
+		maxCount = totalEWallet;
+		popularMethod = "E-Wallet";
+	}
+
 	cout << "========================================================================================================================" << endl;
 	cout << "                                                  Overall Analysis" << endl;
 	cout << "========================================================================================================================" << endl;
 	cout << "A total amount of " << historicalBooking << " bookings has been completed." << endl;
 	cout << "The current total earning of the shop is RM " << fixed << setprecision(2) << totalRevenue << "." << endl;
 	cout << "The most popular and most booked service is \"" << services[1].serviceName << "\" with a total amount of " << services[1].timesBooked << " times booked." << endl;
-	cout << "The average earning per booking is RM" << totalRevenue/historicalBooking << "." << endl << endl;
-
+	cout << "The average earning per booking is RM" << totalRevenue / historicalBooking << "." << endl;
+	cout << "Customers prefer " << popularMethod << " the most as payment method." << endl << endl;
 
 	cout << "Press [ENTER] to return to Report Page.";
 	cin.get();
