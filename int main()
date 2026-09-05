@@ -106,7 +106,6 @@ PetType stringToPetType(string typeStr);
 
 // KAI JIE PART (Service Management)
 void serviceMenu();
-void petgroomingSystem();
 void typeService();
 void addService();
 void updateService();
@@ -677,9 +676,7 @@ bool isDuplicateID(string id) {
 
 //KAI JIE PART (Service Management)
 
-void serviceMenu() {
-	petgroomingSystem();
-}
+
 
 
 
@@ -716,7 +713,7 @@ void saveService()
 
 
 
-void petgroomingSystem() {
+void serviceMenu() {
 	while (true) {
 		string input;
 		char choice;
