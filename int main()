@@ -780,7 +780,7 @@ void serviceMenu() {
 		else if (choice < '0' || choice > '5') {
 			cout << endl << "Invalid choice. Please enter a valid option." << endl;
 		}
-		else if (!choice) {
+		else {
 			cout << endl << "Invalid choice. Please enter a valid option." << endl;
 		}
 	}
