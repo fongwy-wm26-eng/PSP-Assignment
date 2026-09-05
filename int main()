@@ -220,21 +220,27 @@ void loadPaymentsFromFile() {
 
 	paymentCount = 0;
 	string id, status;
-	double amount, deposit, balance;
+	double amount, deposit, balance, totalEarn;
+	int cashCount, onlineBankingCount, eWalletCount;
 
 	while (paymentCount < MAX_PAYMENTS && getline(file, id)) {
 		if (id.empty())
 			continue;
 
-		file >> amount >> deposit >> balance;
+		file >> amount >> deposit >> balance >> totalEarn;
 		file.ignore(); // clear leftover newline before the next getline()
 		getline(file, status);
-
+		file >> cashCount >> onlineBankingCount >> eWalletCount;
+		file.ignore(); // clear leftover newline
 		payments[paymentCount].customerID = id;
 		payments[paymentCount].totalAmount = amount;
 		payments[paymentCount].deposit = deposit;
 		payments[paymentCount].balance = balance;
+		payments[paymentCount].totalEarn = totalEarn;
 		payments[paymentCount].status = status;
+		payments[paymentCount].cashCount = cashCount;
+		payments[paymentCount].onlineBankingCount = onlineBankingCount;
+		payments[paymentCount].eWalletCount = eWalletCount;
 		paymentCount++;
 	}
 	file.close();
@@ -1598,7 +1604,7 @@ void searchService() {
 		cout << "================================================================" << endl;
 
 		if (!validsearchservice()) {
-			return; 
+			return;
 		}
 
 		bool askingAgain = true;
@@ -3345,7 +3351,11 @@ void savePaymentsToFile() {
 		file << payments[i].totalAmount << endl;
 		file << payments[i].deposit << endl;
 		file << payments[i].balance << endl;
+		file << payments[i].totalEarn << endl;
 		file << payments[i].status << endl;
+		file << payments[i].cashCount << endl;
+		file << payments[i].onlineBankingCount << endl;
+		file << payments[i].eWalletCount << endl;
 	}
 	file.close();
 }
