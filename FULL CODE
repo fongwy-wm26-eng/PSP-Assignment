@@ -175,7 +175,6 @@ void sortService();
 void customerStatistic();
 void detailedService();
 void analysis();
-void saveCounter();
 double calculateRevenue();
 void saveHistorical();
 void sortServiceTimes();
